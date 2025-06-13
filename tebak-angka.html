@@ -65,7 +65,17 @@
       75% { transform: translateX(-3px); }
       100% { transform: translateX(0); }
     }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-10px); }
+      50% { transform: translateY(5px); }
+      70% { transform: translateY(-5px); }
+    }
 
+.bounce {
+  animation: bounce 2s infinite;
+  }
     footer {
       margin-top: 60px;
       font-size: 14px;
@@ -109,7 +119,7 @@
 
       if (nilai === angkaRahasia) {
         pesan.innerHTML = `🎉 Benar! Angkanya adalah <strong>${angkaRahasia}</strong>`;
-        pesan.classList.add("menang");
+        pesan.classList.add("menang, bounce");
       } else if (nilai < angkaRahasia) {
         batasBawah = Math.max(batasBawah, nilai + 0);
         pesan.innerHTML = `🔼 Terlalu kecil! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
