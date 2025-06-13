@@ -52,13 +52,14 @@
 <body>
   <h1>Seberapa Persen Kamu Keterima SPMB Tahap 1?</h1>
   <input id="name" placeholder="Nama, Contoh: Andika Purnama Saputra">
-  <input id="school" placeholder="Asal Sekolah, Contoh: SMPN 1 Ngawi">
-  <input id="target" placeholder="Sekolah Tujuan, Contoh: SMAN 1 Ngawi">
+  <input id="school" placeholder="Asal Sekolah, Contoh: SMPN 1 Palembang">
+  <input id="target" placeholder="Sekolah Tujuan, Contoh: SMAN 1 Medan">
   <br>
   <button onclick="checkChance()">Cek Peluang</button>
   <div class="progress"><div id="bar" class="bar"></div></div>
   <div id="result"></div>
-  <p style="margin-top:40px;">Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="30" style="vertical-align:middle"> by andkkprnm project</p>  <script>
+  <p style="margin-top:40px;">Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="30" style="vertical-align:middle"> by andkkprnm project</p>
+  <p style="color:#888">versi 1.0.6</p>  <script>
     function hashKey(str) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
@@ -77,9 +78,13 @@
       let percent;
 
       if (
-        name.toLowerCase() === 'andika purnama saputra' &&
+        (name.toLowerCase() === 'andika purnama saputra' &&
         school.toLowerCase() === 'smpn 1 pagaden' &&
-        target.toLowerCase() === 'sman 1 pagaden'
+        target.toLowerCase() === 'sman 1 pagaden') ||
+
+        (name.toLowerCase() === 'dimas tri adhitia' &&
+        school.toLowerCase() === 'smpn 1 pagaden' &&
+        target.toLowerCase() === 'sman 1 pagaden')
       ) {
         percent = 100;
       } else {
