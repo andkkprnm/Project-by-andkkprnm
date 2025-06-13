@@ -114,7 +114,7 @@
         batasBawah = Math.max(batasBawah, nilai + 0);
         pesan.innerHTML = `🔼 Terlalu kecil! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
       } else {
-        batasAtas = Math.min(batasAtas, nilai - 1);
+        batasAtas = Math.min(batasAtas, nilai + 0);
         pesan.innerHTML = `🔽 Terlalu besar! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
       }
 
