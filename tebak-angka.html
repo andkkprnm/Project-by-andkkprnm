@@ -79,7 +79,7 @@
 </head>
 <body>
   <h1>🎯 Tebak Angka</h1>
-  <p>Masukkan angka antara 1 - 100:</p>
+  <p>Masukkan angka antara 1 - 1000:</p>
   <input type="number" id="tebakan" min="1" max="100">
   <button onclick="tebak()">Tebak</button>
   <div id="pesan"></div>
@@ -93,7 +93,7 @@
   <script>
     const angkaRahasia = Math.floor(Math.random() * 100) + 1;
     let batasBawah = 1;
-    let batasAtas = 100;
+    let batasAtas = 1000;
 
     function tebak() {
       const input = document.getElementById("tebakan");
@@ -102,8 +102,8 @@
 
       pesan.classList.remove("menang");
 
-      if (isNaN(nilai) || nilai < 1 || nilai > 100) {
-        pesan.textContent = "⚠️ Masukkan angka antara 1 dan 100!";
+      if (isNaN(nilai) || nilai < 1 || nilai > 1000) {
+        pesan.textContent = "⚠️ Angka yang di masukkan harus di antara 1 dan 1000!";
         return;
       }
 
@@ -111,7 +111,7 @@
         pesan.innerHTML = `🎉 Benar! Angkanya adalah <strong>${angkaRahasia}</strong>`;
         pesan.classList.add("menang");
       } else if (nilai < angkaRahasia) {
-        batasBawah = Math.max(batasBawah, nilai - 1);
+        batasBawah = Math.max(batasBawah, nilai + 0);
         pesan.innerHTML = `🔼 Terlalu kecil! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
       } else {
         batasAtas = Math.min(batasAtas, nilai - 1);
