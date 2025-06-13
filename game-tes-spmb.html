@@ -1,0 +1,164 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tes SPMB Tahap 1</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 40px;
+      overflow-x: hidden;
+    }h1 {
+  color: #00bfff;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+input {
+  width: 250px;
+  background-color: #222;
+  color: #fff;
+  border: 2px solid #00bfff;
+}
+
+button {
+  background-color: #00bfff;
+  color: #000;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0099cc;
+}
+
+#hasil {
+  margin-top: 30px;
+  font-size: 22px;
+  padding: 20px;
+  border-radius: 10px;
+  display: none;
+  transition: all 0.5s ease;
+}
+
+#persen {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.emoji {
+  position: fixed;
+  top: -40px;
+  animation: fall ease-in infinite;
+  font-size: 24px;
+  opacity: 0.9;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-50px); opacity: 1; }
+  100% { transform: translateY(120vh); opacity: 0; }
+}
+
+footer {
+  margin-top: 60px;
+  color: #888;
+  font-size: 14px;
+}
+
+footer img {
+  height: 24px;
+  vertical-align: middle;
+}
+
+  </style>
+</head>
+<body>  <h1>Tes Seberapa Persen Kamu Keterima SPMB Tahap 1</h1><input type="text" id="nama" placeholder="Contoh: Andika Purnama Saputra" required><br> <input type="text" id="asal" placeholder="Contoh: SMPN 1 Ngawi" required><br> <input type="text" id="tujuan" placeholder="Contoh: SMAN 1 Ngawi" required><br> <button onclick="cekPersen()">Cek Kemungkinan</button>
+
+  <div id="hasil">
+    <div id="persen"></div>
+    <div id="pesan"></div>
+  </div>  <footer>
+    Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg"> by <strong>andkkprnm project</strong>
+  </footer>  <script>
+    function hashString(str) {
+      let hash = 5381;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) + hash) + str.charCodeAt(i);
+      }
+      return Math.abs(hash % 101);
+    }
+
+    function buatEmoji(jumlah, karakter) {
+      for (let i = 0; i < jumlah; i++) {
+        const span = document.createElement("span");
+        span.classList.add("emoji");
+        span.textContent = karakter;
+        span.style.left = Math.random() * 100 + "vw";
+        span.style.animationDuration = (3 + Math.random() * 2) + "s";
+        span.style.fontSize = (16 + Math.random() * 24) + "px";
+        span.style.animationDelay = (Math.random() * 2) + "s";
+        document.body.appendChild(span);
+
+        setTimeout(() => span.remove(), 6000);
+      }
+    }
+
+    function cekPersen() {
+      const nama = document.getElementById("nama").value.trim();
+      const asal = document.getElementById("asal").value.trim();
+      const tujuan = document.getElementById("tujuan").value.trim();
+      const hasil = document.getElementById("hasil");
+      const persen = document.getElementById("persen");
+      const pesan = document.getElementById("pesan");
+
+      if (!nama || !asal || !tujuan) {
+        alert("Isi semua kolom terlebih dahulu!");
+        return;
+      }
+
+      hasil.style.display = "block";
+      persen.textContent = "0%";
+      pesan.textContent = "";
+      hasil.style.backgroundColor = "#222";
+
+      const kombinasi = nama.toLowerCase() + "," + asal.toLowerCase() + "," + tujuan.toLowerCase();
+      const target = hashString(kombinasi);
+      let current = 0;
+
+      const interval = setInterval(() => {
+        if (current >= target) {
+          clearInterval(interval);
+
+          if (target >= 70) {
+            hasil.style.backgroundColor = "#0044ff";
+            pesan.innerHTML = `🎉 Selamat ${nama}, peluangmu masuk ${tujuan} sangat besar! Tetap semangat!`;
+            buatEmoji(50, "🎊");
+          } else if (target >= 40) {
+            hasil.style.backgroundColor = "#ffaa00";
+            pesan.innerHTML = `⚠️ ${nama}, peluangmu masuk ${tujuan} lumayan, tapi tetap harus usaha ya!`;
+            buatEmoji(40, "💪");
+          } else {
+            hasil.style.backgroundColor = "#aa0000";
+            pesan.innerHTML = `😔 Yahh, ${nama}, kemungkinan kamu masuk ${tujuan} masih kecil. Gapapa, masih ada tahap 2 kok!`;
+            buatEmoji(40, "😢");
+          }
+
+        } else {
+          current++;
+          persen.textContent = current + "%";
+        }
+      }, 20);
+    }
+  </script></body>
+</html>
