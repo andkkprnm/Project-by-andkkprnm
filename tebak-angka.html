@@ -2,71 +2,79 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Game Tebak Angka</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tebak Angka!</title>
   <style>
     body {
-      background: #111;
-      color: #eee;
       font-family: 'Segoe UI', sans-serif;
       text-align: center;
-      padding: 50px 20px;
+      background: linear-gradient(to right, #3f87a6, #ebf8e1, #f69d3c);
+      color: #333;
+      padding: 40px;
     }
     h1 {
-      color: #00ffd5;
-      font-size: 2.5em;
-      margin-bottom: 10px;
+      font-size: 2em;
+      color: #222;
     }
-    input, button {
-      padding: 10px 20px;
-      font-size: 1.2em;
-      margin: 10px;
-      border-radius: 10px;
-      border: none;
-    }
-    input {
-      width: 120px;
-      text-align: center;
+    input[type="number"] {
+      padding: 10px;
+      font-size: 18px;
+      width: 100px;
     }
     button {
-      background-color: #00ffd5;
-      color: #111;
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-left: 10px;
+      background-color: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #00bfa5;
+      background-color: #0077aa;
     }
-    #message {
-      font-size: 1.3em;
+    #pesan {
       margin-top: 20px;
-    }
-    .range-hint {
-      font-size: 1.5em;
-      color: #ffeb3b;
-      margin-top: 15px;
+      font-size: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>🎯 Tebak Angka Rahasia</h1>
-  <p>Saya menyimpan satu angka di antara <strong>1 dan 100</strong>. Bisakah kamu menemukannya?</p>
-
-  <input type="number" id="guessInput" placeholder="Tebakanmu" min="1" max="100" />
-  <button onclick="checkGuess()">Tebak Sekarang!</button>
-
-  <div id="message"></div>
-  <div class="range-hint" id="rangeHint">🧐 Angka rahasia di antara <strong>1 dan 100</strong></div>
+  <h1>🎯 Tebak Angka Rahasia!</h1>
+  <p>Masukkan angka dari 1 sampai 100:</p>
+  <input type="number" id="tebakan" min="1" max="100">
+  <button onclick="tebak()">Tebak!</button>
+  <div id="pesan"></div>
 
   <script>
-    const target = Math.floor(Math.random() * 100) + 1;
-    let min = 1;
-    let max = 100;
-    let attempts = 0;
+    const angkaRahasia = Math.floor(Math.random() * 100) + 1;
+    let batasBawah = 1;
+    let batasAtas = 100;
 
-    function checkGuess() {
-      const input = document.getElementById("guessInput");
-      const guess = parseInt(input.value);
-      const message = document.getElementById("message");
-      const hint = document.getElementById("rangeHint");
-      attempts++;
+    function tebak() {
+      const input = document.getElementById("tebakan");
+      const pesan = document.getElementById("pesan");
+      const nilai = parseInt(input.value);
 
-      if (isNaN(guess)) {
+      if (isNaN(nilai) || nilai < 1 || nilai > 100) {
+        pesan.textContent = "Masukkan angka antara 1 dan 100!";
+        return;
+      }
+
+      if (nilai === angkaRahasia) {
+        pesan.innerHTML = `🎉 Selamat! Kamu menebak dengan benar: <strong>${angkaRahasia}</strong>`;
+      } else if (nilai < angkaRahasia) {
+        batasBawah = Math.max(batasBawah, nilai + 1);
+        pesan.innerHTML = `🔼 Terlalu kecil! Coba angka di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
+      } else {
+        batasAtas = Math.min(batasAtas, nilai - 1);
+        pesan.innerHTML = `🔽 Terlalu besar! Coba angka di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
+      }
+
+      input.value = "";
+      input.focus();
+    }
+  </script>
+</body>
+</html>
