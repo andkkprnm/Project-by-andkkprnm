@@ -36,14 +36,16 @@
       border-radius: 5px;
       transition: width 2s;
     }
-    .confetti, .emoji {
+    .falling {
       position: fixed;
+      top: -30px;
       font-size: 24px;
-      animation: fall 3s linear infinite;
+      opacity: 0.8;
+      animation: fall ease-in 4s forwards;
     }
     @keyframes fall {
-      0% {transform: translateY(-100px); opacity: 1;}
-      100% {transform: translateY(100vh); opacity: 0;}
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
     }
   </style>
 </head>
@@ -51,7 +53,7 @@
   <h1>Seberapa Persen Kamu Keterima SPMB Tahap 1?</h1>
   <input id="name" placeholder="Nama, Contoh: Andika Purnama Saputra">
   <input id="school" placeholder="Asal Sekolah, Contoh: SMPN 1 Ngawi">
-  <input id="target" placeholder="Sekolah TujuanContoh: SMAN 1 Ngawi">
+  <input id="target" placeholder="Sekolah Tujuan, Contoh: SMAN 1 Ngawi">
   <br>
   <button onclick="checkChance()">Cek Peluang</button>
   <div class="progress"><div id="bar" class="bar"></div></div>
@@ -70,7 +72,7 @@
       const name = document.getElementById('name').value.trim();
       const school = document.getElementById('school').value.trim();
       const target = document.getElementById('target').value.trim();
-      const key = name + school + target;
+      const key = name.toLowerCase() + school.toLowerCase() + target.toLowerCase();
 
       let percent;
 
@@ -95,30 +97,30 @@
       let result = document.getElementById('result');
       result.innerHTML = `Hasil: ${percent}%`;
 
-      document.querySelectorAll('.confetti, .emoji').forEach(e => e.remove());
+      document.querySelectorAll('.falling').forEach(e => e.remove());
 
       if (percent >= 70) {
         result.innerHTML += "<br>🎉 Selamat! Peluangmu besar! Persiapkan diri untuk tahap selanjutnya!";
-        showFall("confetti", "🎊");
+        showFall("🎊");
       } else if (percent >= 40) {
         result.innerHTML += "<br>💪 Peluangmu sedang, tetap semangat dan belajar lebih giat!";
-        showFall("emoji", "💪");
+        showFall("💪");
       } else {
         result.innerHTML += "<br>😔 Yahh kemungkinan kamu masuk sekolah tujuan masih kecil, gapapa masih ada tahap 2 kok!";
-        showFall("emoji", "😔");
+        showFall("😔");
       }
     }
 
-    function showFall(className, symbol) {
+    function showFall(symbol) {
       for (let i = 0; i < 30; i++) {
         const span = document.createElement('span');
-        span.className = className;
+        span.className = 'falling';
         span.textContent = symbol;
         span.style.left = Math.random() * 100 + 'vw';
-        span.style.animationDuration = (3 + Math.random() * 2) + 's';
+        span.style.animationDuration = (2 + Math.random() * 2) + 's';
         span.style.fontSize = (16 + Math.random() * 16) + 'px';
         document.body.appendChild(span);
-        setTimeout(() => span.remove(), 4000);
+        setTimeout(() => span.remove(), 5000);
       }
     }
   </script></body>
