@@ -2,155 +2,163 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tes Peluang SPMB Tahap 1</title>
+  <title>SPMB Checker</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0d1117;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      background-color: #000;
+      color: #0ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
       padding: 20px;
     }
     h1 {
-      color: #58a6ff;
+      font-size: 2em;
+      color: #00ffff;
     }
-    input, button {
-      padding: 10px;
+    input[type="text"] {
+      padding: 12px;
       margin: 10px;
-      border-radius: 5px;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 10px;
       border: none;
-      font-size: 16px;
+      font-size: 1em;
     }
-    input {
-      width: 300px;
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: none;
+      background: #eee;
+      cursor: pointer;
     }
-    .input-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
+    #progressBar {
+      width: 90%;
+      max-width: 400px;
+      height: 20px;
+      background-color: #333;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px auto;
     }
-    .result {
-      font-size: 24px;
+    #progress {
+      height: 100%;
+      background: linear-gradient(90deg, #00f, #0ff);
+      width: 0;
+    }
+    #hasil {
       margin-top: 20px;
-      font-weight: bold;
+      font-size: 1.2em;
     }
-    .percent {
-      font-size: 48px;
-      animation: countUp 2s ease-out;
+    #footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #0ff;
+    }
+    #footer img {
+      vertical-align: middle;
+      height: 24px;
     }
     .emoji {
       position: absolute;
-      animation: fall 3s linear infinite;
-      user-select: none;
+      top: -50px;
       font-size: 24px;
+      animation: jatuh 3s linear forwards;
     }
-    @keyframes fall {
-      0% { transform: translateY(-100px); opacity: 1; }
-      100% { transform: translateY(100vh); opacity: 0; }
-    }
-    @keyframes countUp {
-      from { transform: scale(0.5); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-    .blue { color: #58a6ff; }
-    .red { color: #f85149; }
-    .yellow { color: #fbbc04; }
-    .hint {
-      white-space: nowrap;
-      overflow: hidden;
-      display: inline-block;
-      width: 100%;
-      box-sizing: border-box;
-      animation: slideHint 10s linear infinite;
-      font-size: 14px;
-      color: #ccc;
-    }
-    @keyframes slideHint {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-    .btns {
-      display: flex;
-      gap: 10px;
+    @keyframes jatuh {
+      to {
+        transform: translateY(100vh);
+        opacity: 0;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🔍 Tes Seberapa Persen Kamu Keterima SPMB Tahap 1 🔍</h1>
-  <div class="input-container">
-    <input id="nama" placeholder="Nama Lengkap">
-    <div class="hint">Contoh: Andika Purnama Saputra</div>
-    <input id="asal" placeholder="Sekolah Asal">
-    <div class="hint">Contoh: SMPN 1 Ngawi</div>
-    <input id="tujuan" placeholder="Sekolah Tujuan">
-    <div class="hint">Contoh: SMAN 1 Ngawi</div>
-    <div class="btns">
-      <button onclick="cekHasil()">Cek Peluang</button>
-      <button onclick="resetForm()">Reset</button>
-      <button onclick="downloadHasil()">Unduh Hasil</button>
-    </div>
-  </div>
-  <div id="hasil" class="result"></div>
-  <canvas id="canvas" style="display:none"></canvas>
-  <p style="margin-top: 40px; font-size: 14px; color: #888;">Build with <b style="color:#e34c26">&lt;/&gt;</b> by andkkprnm project | versi 2.0.3</p>  <script>
-    const hasilEl = document.getElementById('hasil');
-    const stored = {};
+  <h1>Seberapa Persen Kamu Keterima SPMB Tahap 1?</h1>
+  <input type="text" id="nama" placeholder="Nama Lengkap (Contoh: Andika Purnama Saputra)" />
+  <input type="text" id="asal" placeholder="Sekolah Asal (Contoh: SMPN 1 Palembang)" />
+  <input type="text" id="tujuan" placeholder="Sekolah Tujuan (Contoh: SMAN 1 Medan)" />
+  <br />
+  <button onclick="cekPeluang()">Cek Peluang</button>
+  <button onclick="resetForm()">Reset</button>
+  <button onclick="unduhHasil()">Unduh Hasil</button>
+  <div id="progressBar"><div id="progress"></div></div>
+  <div id="hasil"></div>  <div id="footer">
+    Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5" /> by andkkprnm project<br />
+    Versi: 2.0.4
+  </div>  <script>
+    const emojiSet = {
+      besar: '🎉',
+      sedang: '💪',
+      kecil: '😢'
+    };
 
-    function cekHasil() {
+    function cekPeluang() {
       const nama = document.getElementById('nama').value.trim();
       const asal = document.getElementById('asal').value.trim();
       const tujuan = document.getElementById('tujuan').value.trim();
-      const key = `${nama.toLowerCase()}|${asal.toLowerCase()}|${tujuan.toLowerCase()}`;
+      const hasil = document.getElementById('hasil');
+      const progress = document.getElementById('progress');
 
-      let persen = stored[key];
-      if (!persen) {
-        if (
-          nama.toLowerCase() === "andika purnama saputra" &&
-          asal.toLowerCase().includes("smpn 1 pagaden") &&
-          tujuan.toLowerCase().includes("sman 1 pagaden")
-        ) {
-          persen = 100;
-        } else if (
-          nama.toLowerCase() === "dimas akew"
-        ) {
-          persen = 100;
-        } else {
-          persen = Math.floor(Math.random() * 101);
-        }
-        stored[key] = persen;
+      if (!nama || !asal || !tujuan) {
+        alert('Lengkapi semua kolom terlebih dahulu.');
+        return;
       }
 
-      hasilEl.innerHTML = '<div class="percent">' + persen + '%</div>';
+      let persentase = 0;
 
-      let pesan = '';
-      if (persen >= 80) {
-        pesan = '🎉 Selamat! Peluangmu sangat besar untuk diterima!';
-        showEmoji('🎉');
-      } else if (persen >= 50) {
-        pesan = '💪 Tetap semangat! Peluangmu cukup besar!';
-        showEmoji('💪');
+      const key = nama.toLowerCase() + '|' + asal.toLowerCase() + '|' + tujuan.toLowerCase();
+      if (key === 'andika purnama saputra|smpn 1 pagaden|sman 1 pagaden' ||
+          key === 'dimas tri adhitia|smpn 1 pagaden|sman 1 pagaden') {
+        persentase = 100;
       } else {
-        pesan = '😢 Yahh kemungkinan kamu masuk sekolah tujuan masih kecil, gapapa masih ada tahap 2 kok';
-        showEmoji('😢');
+        // Seed-based consistent random for same input
+        let seed = 0;
+        for (let i = 0; i < key.length; i++) {
+          seed += key.charCodeAt(i);
+        }
+        persentase = (seed * 997) % 101;
       }
-      hasilEl.innerHTML += `<div>${pesan}</div>`;
+
+      hasil.innerHTML = '';
+      progress.style.width = '0%';
+      let current = 0;
+
+      const interval = setInterval(() => {
+        if (current >= persentase) {
+          clearInterval(interval);
+          tampilkanHasil(persentase);
+          animasiEmoji(persentase);
+        } else {
+          current++;
+          progress.style.width = current + '%';
+        }
+      }, 20);
     }
 
-    function showEmoji(emoji) {
+    function tampilkanHasil(persen) {
+      let pesan = '';
+      if (persen >= 80) {
+        pesan = `🎉 Selamat! Peluangmu besar! Persiapkan diri untuk tahap selanjutnya!`;
+      } else if (persen >= 50) {
+        pesan = `💪 Cukup baik! Terus semangat dan maksimalkan tahap selanjutnya!`;
+      } else {
+        pesan = `😢 Yahh... peluangmu masih kecil, jangan patah semangat ya! Masih ada tahap 2!`;
+      }
+      document.getElementById('hasil').innerHTML = `Hasil: ${persen}%<br>${pesan}`;
+    }
+
+    function animasiEmoji(persen) {
+      let emoji = persen >= 80 ? emojiSet.besar : persen >= 50 ? emojiSet.sedang : emojiSet.kecil;
       for (let i = 0; i < 30; i++) {
-        const span = document.createElement('span');
+        let span = document.createElement('span');
         span.className = 'emoji';
         span.textContent = emoji;
         span.style.left = Math.random() * 100 + 'vw';
         span.style.animationDuration = (2 + Math.random() * 2) + 's';
-        span.style.top = '-30px';
         document.body.appendChild(span);
-        setTimeout(() => span.remove(), 3000);
+        setTimeout(() => span.remove(), 4000);
       }
     }
 
@@ -158,13 +166,14 @@
       document.getElementById('nama').value = '';
       document.getElementById('asal').value = '';
       document.getElementById('tujuan').value = '';
-      hasilEl.innerHTML = '';
+      document.getElementById('hasil').innerHTML = '';
+      document.getElementById('progress').style.width = '0%';
     }
 
-    function downloadHasil() {
+    function unduhHasil() {
       html2canvas(document.body).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'hasil-tes-spmb.png';
+        let link = document.createElement('a');
+        link.download = 'hasil-spmb.png';
         link.href = canvas.toDataURL();
         link.click();
       });
