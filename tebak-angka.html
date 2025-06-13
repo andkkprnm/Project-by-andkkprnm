@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Tebak Angka</title>
+  <style>
+    body {
+      background: #111;
+      color: #eee;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+    }
+    h1 {
+      color: #00ffd5;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    input, button {
+      padding: 10px 20px;
+      font-size: 1.2em;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+    input {
+      width: 120px;
+      text-align: center;
+    }
+    button {
+      background-color: #00ffd5;
+      color: #111;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00bfa5;
+    }
+    #message {
+      font-size: 1.3em;
+      margin-top: 20px;
+    }
+    .range-hint {
+      font-size: 1.5em;
+      color: #ffeb3b;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Tebak Angka Rahasia</h1>
+  <p>Saya menyimpan satu angka di antara <strong>1 dan 100</strong>. Bisakah kamu menemukannya?</p>
+
+  <input type="number" id="guessInput" placeholder="Tebakanmu" min="1" max="100" />
+  <button onclick="checkGuess()">Tebak Sekarang!</button>
+
+  <div id="message"></div>
+  <div class="range-hint" id="rangeHint">🧐 Angka rahasia di antara <strong>1 dan 100</strong></div>
+
+  <script>
+    const target = Math.floor(Math.random() * 100) + 1;
+    let min = 1;
+    let max = 100;
+    let attempts = 0;
+
+    function checkGuess() {
+      const input = document.getElementById("guessInput");
+      const guess = parseInt(input.value);
+      const message = document.getElementById("message");
+      const hint = document.getElementById("rangeHint");
+      attempts++;
+
+      if (isNaN(guess)) {
