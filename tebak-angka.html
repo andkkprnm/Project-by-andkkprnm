@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tebak Angka</title>
   <style>
     body {
@@ -57,14 +57,6 @@
       animation: bounce 2s infinite;
     }
 
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      50% { transform: translateX(5px); }
-      75% { transform: translateX(-3px); }
-      100% { transform: translateX(0); }
-    }
-
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-15px); }
@@ -96,6 +88,12 @@
     by <strong>andkkprnm project</strong>
   </footer>
 
+  <!-- 🔊 Suara -->
+  <audio id="suaraMenang" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f98ec97a18.mp3?filename=correct-2-46134.mp3" preload="auto"></audio>
+
+  <!-- 🎉 Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <script>
     const angkaRahasia = Math.floor(Math.random() * 1000) + 1;
     let batasBawah = 1;
@@ -105,22 +103,48 @@
       const input = document.getElementById("tebakan");
       const pesan = document.getElementById("pesan");
       const nilai = parseInt(input.value);
+      const suaraMenang = document.getElementById("suaraMenang");
 
       pesan.classList.remove("menang");
 
       if (isNaN(nilai) || nilai < 1 || nilai > 1000) {
-        pesan.textContent = "⚠️ Angka yang di masukkan harus di antara 1 dan 1000!";
+        pesan.textContent = "⚠️ Masukkan angka antara 1 dan 1000!";
         return;
       }
 
       if (nilai === angkaRahasia) {
         pesan.innerHTML = "🎉 Benar! Angkanya adalah <strong>" + angkaRahasia + "</strong>";
         pesan.classList.add("menang");
+
+        // 🔊 Mainkan suara
+        suaraMenang.play();
+
+        // 🎉 Confetti 3 detik
+        const duration = 3000;
+        const end = Date.now() + duration;
+        (function frame() {
+          confetti({
+            particleCount: 5,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 }
+          });
+          confetti({
+            particleCount: 5,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 }
+          });
+          if (Date.now() < end) {
+            requestAnimationFrame(frame);
+          }
+        })();
+
       } else if (nilai < angkaRahasia) {
-        batasBawah = Math.max(batasBawah, nilai + 1);
+        batasBawah = Math.max(batasBawah, nilai); // Tidak ditambah 1
         pesan.innerHTML = "🟧 Terlalu kecil! Coba di antara <strong>" + batasBawah + " - " + batasAtas + "</strong>";
       } else {
-        batasAtas = Math.min(batasAtas, nilai - 1);
+        batasAtas = Math.min(batasAtas, nilai); // Tidak dikurangi 1
         pesan.innerHTML = "🟥 Terlalu besar! Coba di antara <strong>" + batasBawah + " - " + batasAtas + "</strong>";
       }
 
@@ -128,6 +152,5 @@
       input.focus();
     }
   </script>
-
 </body>
 </html>
