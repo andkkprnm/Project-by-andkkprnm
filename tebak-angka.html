@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tebak Angka</title>
   <style>
     body {
@@ -13,10 +13,12 @@
       padding: 40px;
       overflow-x: hidden;
     }
+
     h1 {
       font-size: 32px;
       margin-bottom: 20px;
     }
+
     input[type="number"] {
       padding: 10px;
       font-size: 18px;
@@ -26,6 +28,7 @@
       color: #fff;
       border-radius: 5px;
     }
+
     button {
       padding: 10px 20px;
       font-size: 18px;
@@ -36,26 +39,22 @@
       margin-left: 10px;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #0099cc;
     }
+
     #pesan {
       margin-top: 20px;
       font-size: 20px;
       color: #fff;
       transition: all 0.5s ease-in-out;
     }
-    #pesan.menang {
-      color: #00ffea;
-      font-size: 26px;
-      font-weight: bold;
-      animation: zoom 0.6s ease-in-out, shake 0.3s;
-    }
 
-    @keyframes zoom {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3); }
-      100% { transform: scale(1); }
+    .menang {
+      color: #00ffae;
+      font-weight: bold;
+      animation: bounce 2s infinite;
     }
 
     @keyframes shake {
@@ -65,22 +64,18 @@
       75% { transform: translateX(-3px); }
       100% { transform: translateX(0); }
     }
-    
+
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
-      30% { transform: translateY(-10px); }
-      50% { transform: translateY(5px); }
-      70% { transform: translateY(-5px); }
+      50% { transform: translateY(-15px); }
     }
 
-.bounce {
-  animation: bounce 2s infinite;
-  }
     footer {
       margin-top: 60px;
       font-size: 14px;
       color: #888;
     }
+
     footer img {
       height: 24px;
       vertical-align: middle;
@@ -88,15 +83,16 @@
   </style>
 </head>
 <body>
+
   <h1>🎯 Tebak Angka</h1>
   <p>Masukkan angka antara 1 - 1000:</p>
-  <input type="number" id="tebakan" min="1" max="100">
+  <input type="number" id="tebakan" min="1" max="1000">
   <button onclick="tebak()">Tebak</button>
   <div id="pesan"></div>
 
   <footer>
     Build with
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML Logo">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5">
     by <strong>andkkprnm project</strong>
   </footer>
 
@@ -118,19 +114,20 @@
       }
 
       if (nilai === angkaRahasia) {
-        pesan.innerHTML = `🎉 Benar! Angkanya adalah <strong>${angkaRahasia}</strong>`;
-        pesan.classList.add("menang, bounce");
+        pesan.innerHTML = "🎉 Benar! Angkanya adalah <strong>" + angkaRahasia + "</strong>";
+        pesan.classList.add("menang");
       } else if (nilai < angkaRahasia) {
-        batasBawah = Math.max(batasBawah, nilai + 0);
-        pesan.innerHTML = `🔼 Terlalu kecil! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
+        batasBawah = Math.max(batasBawah, nilai + 1);
+        pesan.innerHTML = "🟧 Terlalu kecil! Coba di antara <strong>" + batasBawah + " - " + batasAtas + "</strong>";
       } else {
-        batasAtas = Math.min(batasAtas, nilai + 0);
-        pesan.innerHTML = `🔽 Terlalu besar! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
+        batasAtas = Math.min(batasAtas, nilai - 1);
+        pesan.innerHTML = "🟥 Terlalu besar! Coba di antara <strong>" + batasBawah + " - " + batasAtas + "</strong>";
       }
 
       input.value = "";
       input.focus();
     }
   </script>
+
 </body>
 </html>
