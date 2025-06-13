@@ -111,7 +111,7 @@
         pesan.innerHTML = `🎉 Benar! Angkanya adalah <strong>${angkaRahasia}</strong>`;
         pesan.classList.add("menang");
       } else if (nilai < angkaRahasia) {
-        batasBawah = Math.max(batasBawah, nilai + 1);
+        batasBawah = Math.max(batasBawah, nilai - 1);
         pesan.innerHTML = `🔼 Terlalu kecil! Coba di antara <strong>${batasBawah} - ${batasAtas}</strong>`;
       } else {
         batasAtas = Math.min(batasAtas, nilai - 1);
