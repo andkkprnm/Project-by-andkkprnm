@@ -7,27 +7,46 @@
     body {
       background-color: #000;
       color: #00f0ff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 40px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     input, button {
       padding: 10px;
       margin: 10px;
       border-radius: 5px;
       border: none;
+      width: 90%;
+      max-width: 400px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    #result-box {
+      background-color: #001f2f;
+      border: 2px solid #00f0ff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 10px #00f0ff;
     }
     #result {
       font-size: 24px;
-      margin-top: 20px;
+      margin-top: 10px;
+      line-height: 1.6;
     }
     .progress {
-      width: 300px;
+      width: 90%;
+      max-width: 400px;
       margin: 20px auto;
       height: 30px;
       border: 2px solid #00f0ff;
       border-radius: 5px;
       position: relative;
+      background-color: #000;
     }
     .bar {
       height: 100%;
@@ -42,24 +61,33 @@
       font-size: 24px;
       opacity: 0.8;
       animation: fall ease-in 4s forwards;
+      z-index: 999;
     }
     @keyframes fall {
       0% { transform: translateY(0); opacity: 1; }
       100% { transform: translateY(100vh); opacity: 0; }
     }
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body>
-  <h1>Seberapa Persen Kamu Keterima SPMB Tahap 1?</h1>
-  <input id="name" placeholder="Nama, Contoh: Andika Purnama Saputra">
-  <input id="school" placeholder="Asal Sekolah, Contoh: SMPN 1 Palembang">
-  <input id="target" placeholder="Sekolah Tujuan, Contoh: SMAN 1 Medan">
-  <br>
-  <button onclick="checkChance()">Cek Peluang</button>
-  <div class="progress"><div id="bar" class="bar"></div></div>
-  <div id="result"></div>
-  <p style="margin-top:40px;">Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="30" style="vertical-align:middle"> by andkkprnm project</p>
-  <p style="color:#888">versi 1.0.6</p>  <script>
+  <h1>🔍 Pengumuman SPMB Tahap 1</h1>
+  <input id="name" placeholder="Nama Lengkap (Contoh: Andika Purnama Saputra)">
+  <input id="school" placeholder="Sekolah Asal (Contoh: SMPN 1 Palembang)">
+  <input id="target" placeholder="Sekolah Tujuan (Contoh: SMAN 1 Medan)">
+  <div class="btn-group">
+    <button onclick="checkChance()">Cek Peluang</button>
+    <button onclick="resetForm()">Reset</button>
+    <button onclick="downloadResult()">Unduh Hasil</button>
+  </div>  <div class="progress"><div id="bar" class="bar"></div></div>  <div id="result-box" style="display:none">
+    <div id="result"></div>
+  </div>  <p style="margin-top:40px;">Build with <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" width="30" style="vertical-align:middle"> by andkkprnm project</p>
+  <p style="color:#888">versi 2.0.1</p>  <script>
     function hashKey(str) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
@@ -81,8 +109,7 @@
         (name.toLowerCase() === 'andika purnama saputra' &&
         school.toLowerCase() === 'smpn 1 pagaden' &&
         target.toLowerCase() === 'sman 1 pagaden') ||
-
-        (name.toLowerCase() === 'dimas tri adhitia' &&
+        (name.toLowerCase() === 'dimas akew' &&
         school.toLowerCase() === 'smpn 1 pagaden' &&
         target.toLowerCase() === 'sman 1 pagaden')
       ) {
@@ -100,8 +127,9 @@
       document.getElementById('bar').style.width = percent + '%';
 
       let result = document.getElementById('result');
-      result.innerHTML = `Hasil: ${percent}%`;
+      result.innerHTML = `<strong>${name}</strong><br>Dari: ${school}<br>Tujuan: ${target}<br><br><strong>Hasil:</strong> ${percent}%`;
 
+      document.getElementById('result-box').style.display = 'block';
       document.querySelectorAll('.falling').forEach(e => e.remove());
 
       if (percent >= 70) {
@@ -116,16 +144,42 @@
       }
     }
 
+    function resetForm() {
+      document.getElementById('name').value = '';
+      document.getElementById('school').value = '';
+      document.getElementById('target').value = '';
+      document.getElementById('bar').style.width = '0';
+      document.getElementById('result-box').style.display = 'none';
+      document.querySelectorAll('.falling').forEach(e => e.remove());
+    }
+
+    function downloadResult() {
+      const name = document.getElementById('name').value.trim();
+      const school = document.getElementById('school').value.trim();
+      const target = document.getElementById('target').value.trim();
+      const key = name.toLowerCase() + school.toLowerCase() + target.toLowerCase();
+      const percent = localStorage.getItem(key);
+
+      const text = `Nama: ${name}\nAsal Sekolah: ${school}\nSekolah Tujuan: ${target}\nHasil: ${percent}%`;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Hasil-SPMB-${name}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
     function showFall(symbol) {
       for (let i = 0; i < 30; i++) {
         const span = document.createElement('span');
         span.className = 'falling';
         span.textContent = symbol;
         span.style.left = Math.random() * 100 + 'vw';
-        span.style.animationDuration = (2 + Math.random() * 2) + 's';
+        span.style.animationDuration = (3 + Math.random() * 2) + 's';
         span.style.fontSize = (16 + Math.random() * 16) + 'px';
         document.body.appendChild(span);
-        setTimeout(() => span.remove(), 5000);
+        setTimeout(() => span.remove(), 6000);
       }
     }
   </script></body>
