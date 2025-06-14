@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tebak Angka Multi Level</title>
+  <style>
+    body {
+      background: #000814;
+      color: #00b4d8;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #90e0ef;
+    }
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+      margin: 10px;
+      border-radius: 5px;
+      border: none;
+      outline: none;
+    }
+    button {
+      background: #00b4d8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0077b6;
+    }
+    #hasil {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #48cae4;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Tebak Angka Multi Level 🎯</h1>
+  <p>Pilih tingkat kesulitan dan coba tebak angkanya!</p>
+  
+  <label for="tingkat">Pilih Tingkat Kesulitan:</label>
+  <select id="tingkat" onchange="setLevel()">
+    <option value="100">Mudah (1–100)</option>
+    <option value="500">Sedang (1–500)</option>
+    <option value="1000">Sulit (1–1000)</option>
+    <option value="10000">SULITT (1–10.000)</option>
+    <option value="100000">SULITT BANGETT (1–100.000)</option>
+  </select><br/>
+
+  <input type="number" id="tebakan" placeholder="Masukkan angka tebakan" />
+  <button onclick="cekTebakan()">Tebak!</button>
+  <div id="hasil"></div>
+
+  <footer>
+    <p>Build with <span style="color: orange;">&#x1F4D6;</span> by andkkprnm project</p>
+    <p>Versi 2.0.6</p>
+  </footer>
+
+  <script>
+    let batas = 100;
+    let angkaBenar = Math.floor(Math.random() * batas) + 1;
+    let batasBawah = 1;
+    let batasAtas = batas;
+
+    function setLevel() {
+      batas = parseInt(document.getElementById("tingkat").value);
+      angkaBenar = Math.floor(Math.random() * batas) + 1;
+      batasBawah = 1;
+      batasAtas = batas;
+      document.getElementById("hasil").innerText = "Angka baru telah dipilih. Coba tebak!";
+    }
+
+    function cekTebakan() {
+      const input = document.getElementById("tebakan");
+      const tebakan = parseInt(input.value);
+      const hasil = document.getElementById("hasil");
+
+      if (isNaN(tebakan)) {
+        hasil.innerText = "Masukkan angka yang valid!";
+        return;
+      }
+
+      if (tebakan < angkaBenar) {
+        if (tebakan + 1 > batasBawah) {
+          batasBawah = tebakan + 1;
+        }
+        hasil.innerText = `Terlalu kecil! Coba antara ${batasBawah} dan ${batasAtas}`;
+      } else if (tebakan > angkaBenar) {
+        if (tebakan - 1 < batasAtas) {
+          batasAtas = tebakan - 1;
+        }
+        hasil.innerText = `Terlalu besar! Coba antara ${batasBawah} sampai ${batasAtas}`;
+      } else {
+        hasil.innerText = `🎉 Benar! Angkanya adalah ${angkaBenar} 🎉`;
+      }
+
+      input.value = "";
+      input.focus();
+    }
+  </script>
+</body>
+</html>
