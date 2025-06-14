@@ -65,7 +65,7 @@
 
   <footer>
     <p>Build with <span style="color: orange;">&#x1F4D6;</span> by andkkprnm project</p>
-    <p>Versi 2.0.6</p>
+    <p>Versi 2.0.7</p>
   </footer>
 
   <script>
@@ -94,12 +94,12 @@
 
       if (tebakan < angkaBenar) {
         if (tebakan + 1 > batasBawah) {
-          batasBawah = tebakan + 1;
+          batasBawah = tebakan + 0;
         }
         hasil.innerText = `Terlalu kecil! Coba antara ${batasBawah} dan ${batasAtas}`;
       } else if (tebakan > angkaBenar) {
         if (tebakan - 1 < batasAtas) {
-          batasAtas = tebakan - 1;
+          batasAtas = tebakan - 0;
         }
         hasil.innerText = `Terlalu besar! Coba antara ${batasBawah} sampai ${batasAtas}`;
       } else {
