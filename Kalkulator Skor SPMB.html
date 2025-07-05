@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalkulator Skor SPMB Jabar 2025</title>
+  <style>
+    body {
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+      color: #222;
+      overflow-x: hidden;
+    }
+    h1 {
+      color: #111;
+      margin-bottom: 30px;
+    }
+    input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+      margin: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #000;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    .hasil {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #0066cc;
+    }
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      color: #666;
+    }
+    footer img {
+      height: 24px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <h1>Kalkulator Skor SPMB Jabar 2025</h1>
+  <input type="text" id="nama" placeholder="Nama Lengkap" /><br>
+  <input type="text" id="asal" placeholder="Asal Sekolah" /><br>
+  <input type="text" id="tujuan" placeholder="Sekolah Tujuan" /><br>
+  <input type="number" id="nilaiRapor" placeholder="Skor Rapor/Skor Kejuaraan (0-500)" min="0" max="500"><br>
+  <input type="number" id="nilaiTes" placeholder="Nilai Tes Terstandar (0-300)" min="0" max="300"><br>
+  <button onclick="hitungSkor()">Hitung Skor</button>
+  <div class="hasil" id="output"></div>
+  <footer>
+    Build with
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5 Logo">
+    by <strong>andkkprnm project</strong><br>
+    versi: 1.0.0
+  </footer>
+  <script>
+    function hitungSkor() {
+      const nama = document.getElementById("nama").value.trim();
+      const asal = document.getElementById("asal").value.trim();
+      const tujuan = document.getElementById("tujuan").value.trim();
+      const rapor = parseFloat(document.getElementById("nilaiRapor").value);
+      const tes = parseFloat(document.getElementById("nilaiTes").value);
+      const output = document.getElementById("output");if (!nama || !asal || !tujuan || isNaN(rapor) || isNaN(tes) || rapor < 0 || rapor > 500 || tes < 0 || tes > 300) {
+    output.innerHTML = "⚠️ Mohon lengkapi semua kolom dengan nilai yang valid.";
+    output.style.color = "red";
+    return;
+  }
+
+  const skorAkhir = ((rapor + tes) / 2).toFixed(2);
+  output.innerHTML = `🎉 Selamat, ${nama}! Skor akhir kamu ${skorAkhir}. Semoga bisa keterima di ${tujuan} yaa 🤩🙌.`;
+  output.style.color = skorAkhir >= 75 ? '#0066cc' : skorAkhir >= 50 ? '#ff9900' : '#cc0000';
+}
+
+  </script>
+</body>
+</html>
