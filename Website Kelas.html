@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Website Kelas - X-12</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <style>
+        /* Warna Kustom Berdasarkan Permintaan (Biru, Putih, Hitam, Abu) */
+        :root {
+            --primary-blue: #1976D2; /* Biru Tua */
+            --light-blue: #42A5F5;   /* Biru Muda/Aksen */
+            --bg-light: #F8F9FA;    /* Abu Muda Latar Belakang */
+            --text-dark: #212529;   /* Hitam Teks */
+            --text-muted: #6C757D;  /* Abu Tua Teks */
+        }
+
+        body {
+            background-color: var(--bg-light);
+            font-family: Arial, sans-serif;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Kelas */
+        .class-header {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Navigasi Tab */
+        .nav-tabs .nav-link {
+            color: var(--text-dark);
+            border: none;
+            border-radius: 0;
+            font-weight: 600;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-blue);
+            border-bottom: 3px solid var(--primary-blue);
+            background-color: transparent;
+        }
+
+        /* Card Statistik Ringkasan & Sosmed/Kontak (GAYA SERAGAM) */
+        .custom-info-card { 
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            text-align: center;
+            height: 100%; /* Pastikan tingginya sama */
+            cursor: pointer; 
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .custom-info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-info-card h3 {
+            color: var(--primary-blue);
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        /* Card Struktur Kelas */
+        .member-card {
+            text-align: center;
+            padding: 10px 5px; 
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+            /* Warna seragam */
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--light-blue) 100%);
+        }
+        
+        .member-card p {
+            font-size: 0.9rem; 
+            margin-bottom: 0;
+        }
+
+        .member-card .role {
+            font-size: 0.75rem; 
+            opacity: 0.9;
+        }
+
+        /* LIST SISWA */
+        .student-list-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+        }
+        
+        .student-list-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .student-list-item .number {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            width: 40px;
+        }
+        
+        .student-list-item .name {
+            font-weight: 700;
+            color: var(--text-dark);
+            flex-grow: 1;
+        }
+
+        .student-list-item .nis {
+            color: var(--text-muted);
+            width: 120px;
+            text-align: right;
+        }
+
+        .student-list-item .role {
+            color: var(--light-blue);
+            font-weight: 600;
+            width: 150px;
+            text-align: center;
+        }
+
+        /* Tabel Jadwal */
+        .schedule-table thead {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .schedule-table th, .schedule-table td {
+            vertical-align: middle;
+            text-align: center;
+            padding: 12px;
+        }
+
+        .schedule-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .istirahat-row td {
+            background-color: #e0e0e0 !important; 
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        /* Style Khusus Sosial Media & Kontak */
+        .contact-link {
+            display: block;
+            padding: 15px;
+            margin-top: 15px;
+            background-color: #25D366; /* WhatsApp Green */
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        
+        .contact-link:hover {
+            background-color: #128C7E;
+        }
+
+        .social-icon-link {
+            font-size: 2rem;
+            margin: 0 15px;
+            color: var(--text-dark);
+            transition: color 0.2s;
+        }
+
+        .social-icon-link:hover {
+            color: var(--primary-blue);
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+
+        <div class="class-header">
+            <h1 class="mb-1">Kelas X-12</h1>
+            <p class="lead mb-0">SMAN 1 Pagaden • Tahun Ajaran 2025/2026</p>
+        </div>
+
+        <ul class="nav nav-tabs mb-4" id="classTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="ringkasan-tab" data-bs-toggle="tab" data-bs-target="#ringkasan" type="button" role="tab" aria-controls="ringkasan" aria-selected="true">Ringkasan</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="siswa-tab" data-bs-toggle="tab" data-bs-target="#siswa" type="button" role="tab" aria-controls="siswa" aria-selected="false">Siswa</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="jadwal-tab" data-bs-toggle="tab" data-bs-target="#jadwal" type="button" role="tab" aria-controls="jadwal" aria-selected="false">Jadwal</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="sosmed-tab" data-bs-toggle="tab" data-bs-target="#sosmed" type="button" role="tab" aria-controls="sosmed" aria-selected="false">Sosial Media</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="kontak-tab" data-bs-toggle="tab" data-bs-target="#kontak" type="button" role="tab" aria-controls="kontak" aria-selected="false">Kontak</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="classTabsContent">
+
+            <div class="tab-pane fade show active" id="ringkasan" role="tabpanel" aria-labelledby="ringkasan-tab">
+                
+                <div class="row mb-5">
+                    <div class="col-md-3">
+                        <div class="custom-info-card" onclick="activateTab('siswa')">
+                            <i class="fas fa-users fa-2x mb-2" style="color: var(--primary-blue);"></i>
+                            <h3>45</h3>
+                            <p>Total Siswa</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="custom-info-card" onclick="activateTab('jadwal')">
+                            <i class="fas fa-book fa-2x mb-2" style="color: var(--light-blue);"></i>
+                            <h3>10</h3>
+                            <p>Mata Pelajaran</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="custom-info-card" onclick="activateTab('sosmed')">
+                            <i class="fas fa-share-alt fa-2x mb-2" style="color: var(--primary-blue);"></i>
+                            <h3>Sosial Media</h3>
+                            <p>Ikuti Kami</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="custom-info-card" onclick="activateTab('kontak')">
+                            <i class="fas fa-phone-alt fa-2x mb-2" style="color: var(--light-blue);"></i>
+                            <h3>Kontak</h3>
+                            <p>Hubungi Pengurus</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="mb-3" style="color: var(--text-dark);">Struktur Organisasi Kelas (20 Pengurus)</h2>
+                <div class="row row-cols-3 row-cols-md-7 g-2" id="strukturKelas">
+                    
+                    <div class="col"><div class="member-card" style="background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);"><p class="mb-0">Wali Kelas</p><p class="role">Monica Krisna Ayunda</p></div></div>
+                    
+                    <div class="col"><div class="member-card"><p class="mb-0">SRI UNA HAERUMAN</p><p class="role">Ketua Kelas</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">FAWWAZ F. SOLEH</p><p class="role">Wakil Ketua</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">SYADZA AMALIA</p><p class="role">Sekretaris 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">KIRANA ASMARANI AJ</p><p class="role">Sekretaris 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">ANIS MARSELA</p><p class="role">Bendahara 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">JULISRA MI'RAJ</p><p class="role">Bendahara 2</p></div></div>
+
+                    <div class="col"><div class="member-card"><p class="mb-0">RINI AULIA PUTRI</p><p class="role">Seksi Agenda</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">RAUDHATUL JANNAH</p><p class="role">Seksi Absensi</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">QAMELANI NOVELIYANA</p><p class="role">Seksi Kesehatan 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">NAILA NISVI SYABANI</p><p class="role">Seksi Kesehatan 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">ANDIKA P. SAPUTRA</p><p class="role">Seksi Keamanan 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">NABIL KEANDRA YUSKA</p><p class="role">Seksi Keamanan 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">TIARA JULIA PUTRI</p><p class="role">Seksi Kebersihan 1</p></div></div>
+
+                    <div class="col"><div class="member-card"><p class="mb-0">RISMA AZKYYA D.N.</p><p class="role">Seksi Kebersihan 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">FIRDA AMELIA</p><p class="role">Seksi Perpustakaan 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">ALMIRA DWI HAPSARI</p><p class="role">Seksi Perpustakaan 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">TASYA KHAIRUNNISA N.A.</p><p class="role">Seksi Kerohanian 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">SILKA A. FATMAWATI</p><p class="role">Seksi Kerohanian 2</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">RAKHA AKMAL MAHARDIKA</p><p class="role">Seksi Olahraga 1</p></div></div>
+                    <div class="col"><div class="member-card"><p class="mb-0">HAMDAN A. JUNIANKHA</p><p class="role">Seksi Olahraga 2</p></div></div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="siswa" role="tabpanel" aria-labelledby="siswa-tab">
+                <input type="text" class="form-control mb-4 p-3" id="studentSearch" placeholder="Cari siswa..." style="border-color: var(--primary-blue);">
+                
+                <div id="studentList" class="card shadow-sm">
+                    <div class="student-list-item" style="background-color: var(--bg-light); border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                        <span class="number" style="color: var(--text-dark); font-weight: 700;">No.</span>
+                        <span class="name" style="font-size: 1.1rem;">Nama Siswa</span>
+                        <span class="nis">NISN</span>
+                        <span class="role">Jabatan</span>
+                    </div>
+
+                    <div class="student-list-item student-item" data-name="sri una haeruman"><span class="number">1</span><span class="name">SRI UNA HAERUMAN</span><span class="nis">010383186</span><span class="role">Ketua Kelas</span></div>
+                    <div class="student-list-item student-item" data-name="fawwaz firjatullah soleh"><span class="number">2</span><span class="name">FAWWAZ FIRJATULLAH SOLEH</span><span class="nis">010133991</span><span class="role">Wakil Ketua</span></div>
+                    <div class="student-list-item student-item" data-name="syadza amalia"><span class="number">3</span><span class="name">SYADZA AMALIA</span><span class="nis">009149968</span><span class="role">Sekretaris 1</span></div>
+                    <div class="student-list-item student-item" data-name="kirana asmarani aj"><span class="number">4</span><span class="name">KIRANA ASMARANI AJ</span><span class="nis">010261456</span><span class="role">Sekretaris 2</span></div>
+                    <div class="student-list-item student-item" data-name="anis marsela"><span class="number">5</span><span class="name">ANIS MARSELA</span><span class="nis">009124797</span><span class="role">Bendahara 1</span></div>
+                    <div class="student-list-item student-item" data-name="julisra mi'raj"><span class="number">6</span><span class="name">JULISRA MI'RAJ</span><span class="nis">009965490</span><span class="role">Bendahara 2</span></div>
+                    <div class="student-list-item student-item" data-name="rini aulia putri"><span class="number">7</span><span class="name">RINI AULIA PUTRI</span><span class="nis">009873855</span><span class="role">Seksi Agenda</span></div>
+                    <div class="student-list-item student-item" data-name="raudhatul jannah"><span class="number">8</span><span class="name">RAUDHATUL JANNAH</span><span class="nis">009629641</span><span class="role">Seksi Absensi</span></div>
+                    <div class="student-list-item student-item" data-name="qamelani noveliyana"><span class="number">9</span><span class="name">QAMELANI NOVELIYANA</span><span class="nis">009986226</span><span class="role">Seksi Kesehatan 1</span></div>
+                    <div class="student-list-item student-item" data-name="naila nisvi syabani"><span class="number">10</span><span class="name">NAILA NISVI SYABANI</span><span class="nis">010989271</span><span class="role">Seksi Kesehatan 2</span></div>
+                    <div class="student-list-item student-item" data-name="andika purnama saputra"><span class="number">11</span><span class="name">ANDIKA PURNAMA SAPUTRA</span><span class="nis">010238052</span><span class="role">Seksi Keamanan 1</span></div>
+                    <div class="student-list-item student-item" data-name="nabil keandra yuska"><span class="number">12</span><span class="name">NABIL KEANDRA YUSKA</span><span class="nis">010838809</span><span class="role">Seksi Keamanan 2</span></div>
+                    <div class="student-list-item student-item" data-name="tiara julia putri"><span class="number">13</span><span class="name">TIARA JULIA PUTRI</span><span class="nis">009896758</span><span class="role">Seksi Kebersihan 1</span></div>
+                    <div class="student-list-item student-item" data-name="risma azkyya dwi nabila"><span class="number">14</span><span class="name">RISMA AZKYYA DWI NABILA</span><span class="nis">010247395</span><span class="role">Seksi Kebersihan 2</span></div>
+                    <div class="student-list-item student-item" data-name="firda amelia"><span class="number">15</span><span class="name">FIRDA AMELIA</span><span class="nis">010849072</span><span class="role">Seksi Perpustakaan 1</span></div>
+                    <div class="student-list-item student-item" data-name="almira dwi hapsari"><span class="number">16</span><span class="name">ALMIRA DWI HAPSARI</span><span class="nis">010686913</span><span class="role">Seksi Perpustakaan 2</span></div>
+                    <div class="student-list-item student-item" data-name="tasya khairunnisa nur arini"><span class="number">17</span><span class="name">TASYA KHAIRUNNISA NUR ARINI</span><span class="nis">009130203</span><span class="role">Seksi Kerohanian 1</span></div>
+                    <div class="student-list-item student-item" data-name="silka artamevia fatmawati"><span class="number">18</span><span class="name">SILKA ARTAMEVIA FATMAWATI</span><span class="nis">009366672</span><span class="role">Seksi Kerohanian 2</span></div>
+                    <div class="student-list-item student-item" data-name="rakha akmal mahardika"><span class="number">19</span><span class="name">RAKHA AKMAL MAHARDIKA</span><span class="nis">010111999</span><span class="role">Seksi Olahraga 1</span></div>
+                    <div class="student-list-item student-item" data-name="hamdan aqilla juniankha"><span class="number">20</span><span class="name">HAMDAN AQILLA JUNIANKHA</span><span class="nis">010832296</span><span class="role">Seksi Olahraga 2</span></div>
+
+                    <div class="student-list-item student-item" data-name="adisya ainnun nazwa"><span class="number">21</span><span class="name">ADISYA AINNUN NAZWA</span><span class="nis">010465645</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="alden arka putra"><span class="number">22</span><span class="name">ALDEN ARKA PUTRA</span><span class="nis">009833546</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="alfarizi fathulhilal"><span class="number">23</span><span class="name">ALFARIZI FATHULHILAL</span><span class="nis">010298488</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="alip aji maulana"><span class="number">24</span><span class="name">ALIP AJI MAULANA</span><span class="nis">010654402</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="arisa"><span class="number">25</span><span class="name">ARISA</span><span class="nis">010683286</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="bunga ayu pertiwi pebriyan"><span class="number">26</span><span class="name">BUNGA AYU PERTIWI PEBRIYAN</span><span class="nis">009594307</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="cantika putri ramadhani"><span class="number">27</span><span class="name">CANTIKA PUTRI RAMADHANI</span><span class="nis">009922580</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="daha nahal rakadiat"><span class="number">28</span><span class="name">DAHA NAHAL RAKADIAT</span><span class="nis">010227096</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="deri misba hudin"><span class="number">29</span><span class="name">DERI MISBA HUDIN</span><span class="nis">009602196</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="devi nurani"><span class="number">30</span><span class="name">DEVI NURANI</span><span class="nis">009417702</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="dini agustina"><span class="number">31</span><span class="name">DINI AGUSTINA</span><span class="nis">009237719</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="frima aria kusuma"><span class="number">32</span><span class="name">FRIMA ARIA KUSUMA</span><span class="nis">010641254</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="kinanti"><span class="number">33</span><span class="name">KINANTI</span><span class="nis">010496833</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="moch. pilar saba buana"><span class="number">34</span><span class="name">MOCH. PILAR SABA BUANA</span><span class="nis">010486652</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="muhammad raval fauzan"><span class="number">35</span><span class="name">MUHAMMAD RAVAL FAUZAN</span><span class="nis">009433709</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="narwita"><span class="number">36</span><span class="name">NARWITA</span><span class="nis">010739710</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="nizar zahirul haq"><span class="number">37</span><span class="name">NIZAR ZAHIRUL HAQ</span><span class="nis">009185752</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="refina julistianty agustie"><span class="number">38</span><span class="name">REFINA JULISTIANTY AGUSTIE</span><span class="nis">009501628</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="reno alfarizi"><span class="number">39</span><span class="name">RENO ALFARIZI</span><span class="nis">009985085</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="revaliana aulia sudrajat"><span class="number">40</span><span class="name">REVALIANA AULIA SUDRAJAT</span><span class="nis">010386583</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="rizni afifah"><span class="number">41</span><span class="name">RIZNI AFIFAH</span><span class="nis">009366672</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="tigin gumilar ginarahayu"><span class="number">42</span><span class="name">TIGIN GUMILAR GINARAHAYU</span><span class="nis">008142001</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="tri endang mulyana"><span class="number">43</span><span class="name">TRI ENDANG MULYANA</span><span class="nis">010379046</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="wildan nur firdaus"><span class="number">44</span><span class="name">WILDAN NUR FIRDAUS</span><span class="nis">010379046</span><span class="role">Anggota</span></div>
+                    <div class="student-list-item student-item" data-name="kaysa nurdin"><span class="number">45</span><span class="name">KAYSA NURDIN</span><span class="nis">-</span><span class="role">Anggota</span></div>
+                    
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="jadwal" role="tabpanel" aria-labelledby="jadwal-tab">
+                <h2 class="mb-3" style="color: var(--text-dark);">Jadwal Pelajaran (10 Jam Pelajaran)</h2>
+                <div class="table-responsive">
+                    <table class="table table-bordered schedule-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%;">Jam Ke-</th>
+                                <th>Senin</th>
+                                <th>Selasa</th>
+                                <th>Rabu</th>
+                                <th>Kamis</th>
+                                <th>Jumat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>PJOK</td><td>B. Indonesia</td><td>Literasi</td><td>Matematika</td><td>Kokulikuler</td></tr>
+                            <tr><td>2</td><td>PJOK</td><td>B. Indonesia</td><td>Ekonomi</td><td>Matematika</td><td>Kokulikuler</td></tr>
+                            <tr><td>3</td><td>Prakarya</td><td>B. Indonesia</td><td>Ekonomi</td><td>Matematika</td><td>Kokulikuler</td></tr>
+                            <tr><td>4</td><td>Prakarya</td><td>Sosiologi</td><td>Informatika</td><td>Geografi</td><td>-</td></tr>
+                            
+                            <tr class="istirahat-row"><td colspan="6">I S T I R A H A T</td></tr>
+                            
+                            <tr><td>5</td><td>Kimia</td><td>Sosiologi</td><td>Informatika</td><td>Geografi</td><td>-</td></tr>
+                            <tr><td>6</td><td>Kimia</td><td>BK</td><td>PKN</td><td>PAI</td><td>-</td></tr>
+                            <tr><td>7</td><td>Seni Tari</td><td>B. Inggris</td><td>PKN</td><td>PAI</td><td>-</td></tr>
+
+                            <tr class="istirahat-row"><td colspan="6">I S T I R A H A T</td></tr>
+
+                            <tr><td>8</td><td>Seni Tari</td><td>B. Inggris</td><td>Biologi</td><td>Fisika</td><td>-</td></tr>
+                            <tr><td>9</td><td>Sejarah</td><td>B. Inggris</td><td>Biologi</td><td>Fisika</td><td>-</td></tr>
+                            <tr><td>10</td><td>Sejarah</td><td>-</td><td>-</td><td>-</td><td>-</td></tr> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="sosmed" role="tabpanel" aria-labelledby="sosmed-tab">
+                <h2 class="mb-4" style="color: var(--text-dark);"><i class="fas fa-share-alt me-2"></i>Sosial Media Kelas</h2>
+                <p class="text-muted text-center">Ikuti aktivitas dan informasi terbaru kami di platform resmi kelas X-12.</p>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-6 col-md-4">
+                        <div class="custom-info-card">
+                            <a href="https://instagram.com/aetherwise_x12" target="_blank" class="social-icon-link">
+                                <i class="fab fa-instagram" style="color: #E4405F;"></i>
+                            </a>
+                            <h5 class="mt-3">Instagram</h5>
+                            <p class="text-muted mb-0">@aetherwise_x12</p>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                        <div class="custom-info-card">
+                            <a href="https://tiktok.com/@aetherwise_x12" target="_blank" class="social-icon-link">
+                                <i class="fab fa-tiktok" style="color: #000000;"></i>
+                            </a>
+                            <h5 class="mt-3">TikTok</h5>
+                            <p class="text-muted mb-0">@aetherwise_x12</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="kontak" role="tabpanel" aria-labelledby="kontak-tab">
+                <h2 class="mb-4" style="color: var(--text-dark);"><i class="fas fa-phone-alt me-2"></i>Informasi Kontak Pengurus</h2>
+                <p class="text-muted text-center">Hubungi Ketua Kelas (SRI UNA HAERUMAN) dan Wakil Ketua (FAWWAZ FIRJATULLAH SOLEH) langsung melalui WhatsApp.</p>
+                <div class="row justify-content-center mt-4">
+                    
+                    <div class="col-6 col-md-4">
+                        <div class="custom-info-card">
+                            <h5 class="mb-3" style="color: var(--text-dark);">Ketua Kelas</h5>
+                            <p class="text-muted">SRI UNA HAERUMAN (KM)</p>
+                            <a href="https://wa.me/62895393376284" target="_blank" rel="noopener noreferrer" class="contact-link">
+                                <i class="fab fa-whatsapp me-2"></i> Chat KM
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-6 col-md-4">
+                        <div class="custom-info-card">
+                            <h5 class="mb-3" style="color: var(--text-dark);">Wakil Ketua</h5>
+                            <p class="text-muted">FAWWAZ FIRJATULLAH SOLEH (Wakil KM)</p>
+                            <a href="https://wa.me/6285221083060" target="_blank" rel="noopener noreferrer" class="contact-link">
+                                <i class="fab fa-whatsapp me-2"></i> Chat Wakil KM
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Fungsionalitas klik card ringkasan untuk pindah tab
+        function activateTab(tabId) {
+            const tabButton = document.getElementById(tabId + '-tab');
+            if (tabButton) {
+                const bsTab = new bootstrap.Tab(tabButton);
+                bsTab.show();
+            }
+        }
+        
+        // Fungsionalitas Pencarian Siswa (di Tab Siswa)
+        document.getElementById('studentSearch').addEventListener('keyup', function() {
+            let searchValue = this.value.toLowerCase();
+            // Ambil semua elemen daftar siswa (student-item), lewati header list
+            let studentItems = document.querySelectorAll('#studentList .student-item');
+
+            studentItems.forEach(item => {
+                let name = item.querySelector('.name').textContent.toLowerCase();
+                let nis = item.querySelector('.nis').textContent.toLowerCase();
+                let position = item.querySelector('.role').textContent.toLowerCase();
+                
+                // Cari berdasarkan Nama, NISN, atau Jabatan
+                if (name.includes(searchValue) || nis.includes(searchValue) || position.includes(searchValue)) {
+                    item.style.display = 'flex'; 
+                } else {
+                    item.style.display = 'none'; 
+                }
+            });
+        });
+    </script>
+</body>
+</html>
