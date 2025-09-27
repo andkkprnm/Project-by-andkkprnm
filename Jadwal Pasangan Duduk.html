@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Pasangan Duduk - Dark Mode</title>
+    <style>
+        /* ========================================================= */
+        /* 1. DARK THEME STYLES */
+        /* ========================================================= */
+        :root {
+            --color-background: #1e1e1e; /* Hitam gelap */
+            --color-surface: #2d2d2d;    /* Permukaan kartu/kontainer */
+            --color-text: #e0e0e0;       /* Putih pucat untuk teks utama */
+            --color-primary: #007bff;    /* Biru utama */
+            --color-accent: #00aaff;     /* Biru aksen/cerah */
+            --color-success: #28a745;
+            --color-warning: #ffc107;
+            --color-danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--color-background);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: var(--color-surface);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            flex-grow: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--color-accent);
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #3a3a3a;
+            color: var(--color-text);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            background-color: var(--color-accent);
+        }
+        button:active {
+            transform: scale(0.99);
+        }
+
+        #hasilOutput {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 8px;
+            background-color: #3a3a3a;
+            white-space: pre-wrap;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-left: 5px solid var(--color-primary); /* Garis aksen biru */
+        }
+        
+        /* Warna untuk output */
+        .output-success { color: var(--color-success); }
+        .output-warning { color: var(--color-warning); }
+        .output-danger { color: var(--color-danger); }
+        
+        /* ========================================================= */
+        /* 2. WATERMARK STYLES */
+        /* ========================================================= */
+        .watermark {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            color: #6c757d; /* Abu-abu redup */
+            font-size: 0.85em;
+        }
+        .watermark-version {
+            margin-top: 5px;
+            font-size: 0.75em;
+            color: #495057;
+        }
+        .watermark-logo {
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+        .html-logo-symbol {
+            font-size: 1.2em;
+            color: #e34c26; /* HTML5 Orange */
+            margin: 0 3px;
+            vertical-align: middle;
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pencarian Pasangan Duduk Kelas X-12</h1>
+
+    <div class="input-group">
+        <label for="hariInput">Hari Ke- (1-45):</label>
+        <input type="number" id="hariInput" min="1" max="45" placeholder="Contoh: 5">
+    </div>
+
+    <div class="input-group">
+        <label for="absenInput">Nomor Absen Siswa (1-45):</label>
+        <input type="number" id="absenInput" min="1" max="45" placeholder="Contoh: 18">
+    </div>
+
+    <button onclick="cariPasanganHandler()">Cari Pasangan Duduk</button>
+
+    <div id="hasilOutput">
+        Hasil akan muncul di sini.
+    </div>
+
+</div>
+
+<div class="watermark">
+    build with 
+    <span class="html-logo-symbol">&lt;/&gt;</span>
+    <span class="watermark-logo"></span> by andkkprnm project
+    <div class="watermark-version">versi 1.0.1</div>
+</div>
+
+<script>
+// ==============================================================================
+// DATA SISWA (Dari kode Python)
+// ==============================================================================
+const daftarNamaSiswa = {
+    1: "ADISYA AINNUN NAZWA", 2: "ALDEN ARKA PUTRA", 3: "ALFARIZI FATHULHILAL", 4: "ALIP AJI MAULANA",
+    5: "ALMIRA DWI HAPSARI", 6: "ANDIKA PURNAMA SAPUTRA", 7: "ANIS MARSELA", 8: "ARISA",
+    9: "BUNGA AYU PERTIWI PEBRIYAN", 10: "CANTIKA PUTRI RAMADHANI", 11: "DAHA NAHAL RAKADIAT", 12: "DERI MISBA HUDIN",
+    13: "DEVI NURANI", 14: "DINI AGUSTINA", 15: "FAWWAZ FIRJATULLAH SOLEH", 16: "FIRDA AMELIA",
+    17: "FRIMA ARIA KUSUMA", 18: "HAMDAN AQILLA JUNIANKHA", 19: "JULISRA MI'RAJ", 20: "KINANTI",
+    21: "KIRANA ASMARANI AJ", 22: "MOCH. PILAR SABA BUANA", 23: "MUHAMMAD RAVAL FAUZAN", 24: "NABIL KEANDRA YUSKA",
+    25: "NAILA NISVI SYABANI", 26: "NARWITA", 27: "NIZAR ZAHIRUL HAQ", 28: "QAMELANI NOVELIYANA",
+    29: "RAKHA AKMAL MAHARDIKA", 30: "RAUDHATUL JANNAH", 31: "REFINA JULISTIANTY AGUSTIE", 32: "RENO ALFARIZI",
+    33: "REVALIANA AULIA SUDRAJAT", 34: "RINI AULIA PUTRI", 35: "RISMA AZKYYA DWI NABILA", 36: "RIZNI AFIFAH",
+    37: "SILKA ARTAMEVIA FATMAWATI", 38: "SRI UNA HAERUMAN", 39: "SYADZA AMALIA", 40: "TASYA KHAIRUNNISA NUR ARINI",
+    41: "TIARA JULIA PUTRI", 42: "TIGIN GUMILAR GINARAHAYU", 43: "TRI ENDANG MULYANA", 44: "WILDAN NUR FIRDAUS", 45: "KAYSA NURDIN"
+};
+
+function getNama(absen) {
+    return daftarNamaSiswa[absen] || `Nama Tidak Ditemukan (${absen})`;
+}
+
+// ==============================================================================
+// DATA JADWAL PASANGAN DUDUK (Dari kode Python)
+// ==============================================================================
+const jadwalInput = {
+    "Hari 1": { "kiri": [1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45], "kanan": [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44] },
+    "Hari 2": { "kiri": [23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], "kanan": [24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45] },
+    "Hari 3": { "kiri": [24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], "kanan": [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22] },
+    "Hari 4": { "kiri": [25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], "kanan": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21] },
+    "Hari 5": { "kiri": [26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], "kanan": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20] },
+    "Hari 6": { "kiri": [27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], "kanan": [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19] },
+    "Hari 7": { "kiri": [28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], "kanan": [29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18] },
+    "Hari 8": { "kiri": [29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], "kanan": [30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17] },
+    "Hari 9": { "kiri": [30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "kanan": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16] },
+    "Hari 10": { "kiri": [31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13, 14], "kanan": [32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15] },
+    "Hari 11": { "kiri": [32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12, 13], "kanan": [33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14] },
+    "Hari 12": { "kiri": [33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11, 12], "kanan": [34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13] },
+    "Hari 13": { "kiri": [34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10, 11], "kanan": [35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12] },
+    "Hari 14": { "kiri": [35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9, 10], "kanan": [36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11] },
+    "Hari 15": { "kiri": [36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8, 9], "kanan": [37, 38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10] },
+    "Hari 16": { "kiri": [37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7, 8], "kanan": [38, 39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9] },
+    "Hari 17": { "kiri": [38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6, 7], "kanan": [39, 40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8] },
+    "Hari 18": { "kiri": [39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5 , 6], "kanan": [40, 41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7] },
+    "Hari 19": { "kiri": [40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4, 5], "kanan": [41, 42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6] },
+    "Hari 20": { "kiri": [41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3, 4], "kanan": [42, 43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5] },
+    "Hari 21": { "kiri": [42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2, 3], "kanan": [43, 44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4] },
+    "Hari 22": { "kiri": [43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1, 2], "kanan": [44, 45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3] },
+    "Hari 23": { "kiri": [44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 1], "kanan": [45, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2] },
+    "Hari 24": { "kiri": [45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23], "kanan": [22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1] },
+    "Hari 25": { "kiri": [22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24], "kanan": [21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23] },
+    "Hari 26": { "kiri": [21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25], "kanan": [20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24] },
+    "Hari 27": { "kiri": [20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26], "kanan": [19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25] },
+    "Hari 28": { "kiri": [19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27], "kanan": [18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26] },
+    "Hari 29": { "kiri": [18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28], "kanan": [17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27] },
+    "Hari 30": { "kiri": [17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29], "kanan": [16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28] },
+    "Hari 31": { "kiri": [16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30], "kanan": [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29] },
+    "Hari 32": { "kiri": [15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32, 31], "kanan": [14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30] },
+    "Hari 33": { "kiri": [14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33, 32], "kanan": [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31] },
+    "Hari 34": { "kiri": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34, 33], "kanan": [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32] },
+    "Hari 35": { "kiri": [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35, 34], "kanan": [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33] },
+    "Hari 36": { "kiri": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36, 35], "kanan": [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34] },
+    "Hari 37": { "kiri": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36], "kanan": [9, 8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35] },
+    "Hari 38": { "kiri": [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38, 37], "kanan": [8, 7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36] },
+    "Hari 39": { "kiri": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39, 38], "kanan": [7, 6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37] },
+    "Hari 40": { "kiri": [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40, 39], "kanan": [6, 5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38] },
+    "Hari 41": { "kiri": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41, 40], "kanan": [5, 4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39] },
+    "Hari 42": { "kiri": [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42, 41], "kanan": [4, 3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40] },
+    "Hari 43": { "kiri": [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43, 42], "kanan": [3, 2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41] },
+    "Hari 44": { "kiri": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44, 43], "kanan": [2, 1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42] },
+    "Hari 45": { "kiri": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 45, 44], "kanan": [1, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43] },
+};
+
+// ==============================================================================
+// LOGIC (Dipertahankan dari Python, disesuaikan untuk JavaScript)
+// ==============================================================================
+
+function cariPasangan(hariKe, absenSiswa) {
+    const hariKey = `Hari ${hariKe}`;
+    
+    if (absenSiswa < 1 || absenSiswa > 45) {
+        return { message: `❌ Absen ${absenSiswa} tidak valid. (Rentang 1 - 45).`, type: 'danger' };
+    }
+    
+    if (hariKe < 1 || hariKe > 45 || !jadwalInput[hariKey]) {
+        return { message: `❌ Hari ke-${hariKe} tidak valid. (Rentang 1 - 45).`, type: 'danger' };
+    }
+
+    const dataHari = jadwalInput[hariKey];
+    const kiri = dataHari["kiri"];
+    const kanan = dataHari["kanan"];
+    const namaSiswa = getNama(absenSiswa);
+    
+    let indexKiri = kiri.indexOf(absenSiswa);
+    let indexKanan = kanan.indexOf(absenSiswa);
+
+    if (indexKiri !== -1) {
+        if (indexKiri < kanan.length) {
+            const absenPasangan = kanan[indexKiri];
+            const namaPasangan = getNama(absenPasangan);
+            return { 
+                message: `✅ Pada ${hariKey}, Absen ${absenSiswa} (${namaSiswa}) duduk dengan Absen ${absenPasangan} (${namaPasangan}).`, 
+                type: 'success' 
+            };
+        } else {
+            return { 
+                message: `⚠️ Pada ${hariKey}, Absen ${absenSiswa} (${namaSiswa}) TIDAK BERPASANGAN (duduk sendiri).`, 
+                type: 'warning' 
+            };
+        }
+    } else if (indexKanan !== -1) {
+        if (indexKanan < kiri.length) {
+            const absenPasangan = kiri[indexKanan];
+            const namaPasangan = getNama(absenPasangan);
+            return { 
+                message: `✅ Pada ${hariKey}, Absen ${absenSiswa} (${namaSiswa}) duduk dengan Absen ${absenPasangan} (${namaPasangan}).`, 
+                type: 'success' 
+            };
+        }
+    }
+
+    return { 
+        message: `Absen ${absenSiswa} (${namaSiswa}) tidak ditemukan dalam pasangan duduk untuk ${hariKey}.`, 
+        type: 'danger' 
+    };
+}
+
+// ==============================================================================
+// HANDLER (Menghubungkan Input/Output)
+// ==============================================================================
+
+function cariPasanganHandler() {
+    const hariInput = document.getElementById('hariInput').value;
+    const absenInput = document.getElementById('absenInput').value;
+    const outputElement = document.getElementById('hasilOutput');
+
+    const hariKe = parseInt(hariInput);
+    const absenSiswa = parseInt(absenInput);
+
+    if (isNaN(hariKe) || isNaN(absenSiswa)) {
+        outputElement.textContent = "❌ Input tidak valid. Harap masukkan angka saja.";
+        outputElement.className = 'output-danger';
+        return;
+    }
+    
+    const hasil = cariPasangan(hariKe, absenSiswa);
+    
+    // Tampilkan hasil dan atur class/warna
+    outputElement.textContent = hasil.message;
+    outputElement.className = 'output-' + hasil.type;
+}
+</script>
+
+</body>
+</html>
