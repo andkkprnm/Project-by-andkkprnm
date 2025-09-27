@@ -47,6 +47,7 @@
             border: none;
             border-radius: 0;
             font-weight: 600;
+            white-space: nowrap; /* Cegah teks tab membungkus */
         }
 
         .nav-tabs .nav-link.active {
@@ -54,6 +55,15 @@
             border-bottom: 3px solid var(--primary-blue);
             background-color: transparent;
         }
+        /* Aktifkan scrolling horizontal untuk tab di mobile */
+        .nav-tabs {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        .nav-tabs .nav-item {
+            flex-shrink: 0;
+        }
+
 
         /* Card Statistik Ringkasan & Sosmed/Kontak (GAYA SERAGAM) */
         .custom-info-card { 
@@ -101,7 +111,7 @@
             opacity: 0.9;
         }
 
-        /* LIST SISWA */
+        /* LIST SISWA (Desktop Style) */
         .student-list-item {
             display: flex;
             align-items: center;
@@ -161,7 +171,21 @@
             font-weight: bold;
             color: var(--text-dark);
         }
-
+        
+        /* Footer Style */
+        .page-footer {
+            margin-top: 30px;
+            padding: 15px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        .page-footer .logo-html {
+            font-size: 1.2rem; 
+            color: #E4405F; /* Warna ikon HTML5 yang khas/mirip FA */
+        }
+        
         /* Style Khusus Sosial Media & Kontak */
         .contact-link {
             display: block;
@@ -189,13 +213,86 @@
         .social-icon-link:hover {
             color: var(--primary-blue);
         }
+
+        /* ========================================
+        MEDIA QUERIES FOR MOBILE RESPONSIVENESS
+        ========================================
+        */
+        @media (max-width: 767.98px) {
+            .main-container {
+                margin: 20px auto;
+                padding: 10px;
+            }
+
+            .class-header {
+                padding: 20px 15px;
+            }
+            
+            .class-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .custom-info-card h3 {
+                font-size: 2rem;
+            }
+            
+            /* Student List (Mengubah dari Flex horizontal menjadi Stacking vertikal) */
+            .student-list-item {
+                display: block; /* Nonaktifkan Flex untuk mempermudah stacking */
+                padding: 10px 15px;
+            }
+
+            /* Sembunyikan Header List di Mobile */
+            #studentList .student-list-item:first-child {
+                display: none; 
+            }
+            
+            .student-list-item > span {
+                display: block;
+                width: auto !important; /* Timpa lebar tetap */
+                text-align: left !important;
+                padding: 0;
+            }
+
+            .student-list-item .number {
+                display: inline-block;
+                margin-right: 10px;
+                font-size: 1.1rem;
+            }
+            
+            /* Menggabungkan No. dan Nama di baris yang sama */
+            .student-list-item .name {
+                display: inline;
+                font-size: 1.1rem;
+            }
+            
+            .student-list-item .nis {
+                color: var(--text-muted);
+                font-size: 0.85rem;
+            }
+            
+            .student-list-item .role {
+                color: var(--light-blue);
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-top: 5px;
+                border-top: 1px dashed #eee;
+                padding-top: 5px;
+            }
+            
+            /* Card Kontak & Sosmed menjadi 1 kolom penuh di mobile */
+            .row.justify-content-center > .col-6.col-md-4 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="main-container">
 
         <div class="class-header">
-            <h1 class="mb-1">Kelas X-12</h1>
+            <h1 class="mb-1">Project Website Kelas X-12</h1>
             <p class="lead mb-0">SMAN 1 Pagaden • Tahun Ajaran 2025/2026</p>
         </div>
 
@@ -222,28 +319,28 @@
             <div class="tab-pane fade show active" id="ringkasan" role="tabpanel" aria-labelledby="ringkasan-tab">
                 
                 <div class="row mb-5">
-                    <div class="col-md-3">
+                    <div class="col-6 col-md-3">
                         <div class="custom-info-card" onclick="activateTab('siswa')">
                             <i class="fas fa-users fa-2x mb-2" style="color: var(--primary-blue);"></i>
                             <h3>45</h3>
                             <p>Total Siswa</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-6 col-md-3">
                         <div class="custom-info-card" onclick="activateTab('jadwal')">
                             <i class="fas fa-book fa-2x mb-2" style="color: var(--light-blue);"></i>
                             <h3>10</h3>
                             <p>Mata Pelajaran</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-6 col-md-3">
                         <div class="custom-info-card" onclick="activateTab('sosmed')">
                             <i class="fas fa-share-alt fa-2x mb-2" style="color: var(--primary-blue);"></i>
                             <h3>Sosial Media</h3>
                             <p>Ikuti Kami</p>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-6 col-md-3">
                         <div class="custom-info-card" onclick="activateTab('kontak')">
                             <i class="fas fa-phone-alt fa-2x mb-2" style="color: var(--light-blue);"></i>
                             <h3>Kontak</h3>
@@ -252,8 +349,8 @@
                     </div>
                 </div>
 
-                <h2 class="mb-3" style="color: var(--text-dark);">Struktur Organisasi Kelas (20 Pengurus)</h2>
-                <div class="row row-cols-3 row-cols-md-7 g-2" id="strukturKelas">
+                <h2 class="mb-3" style="color: var(--text-dark);">Struktur Organisasi Kelas</h2>
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-lg-7 g-2" id="strukturKelas">
                     
                     <div class="col"><div class="member-card" style="background: linear-gradient(135deg, #128C7E 0%, #25D366 100%);"><p class="mb-0">Wali Kelas</p><p class="role">Monica Krisna Ayunda</p></div></div>
                     
@@ -432,6 +529,15 @@
             </div>
 
         </div>
+        
+        <div class="page-footer">
+            <p class="mb-0">
+                build with <i class="fab fa-html5 logo-html"></i> by andkkprnm project
+            </p>
+            <p class="mb-0">
+                Versi 1.0.1
+            </p>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -448,7 +554,6 @@
         // Fungsionalitas Pencarian Siswa (di Tab Siswa)
         document.getElementById('studentSearch').addEventListener('keyup', function() {
             let searchValue = this.value.toLowerCase();
-            // Ambil semua elemen daftar siswa (student-item), lewati header list
             let studentItems = document.querySelectorAll('#studentList .student-item');
 
             studentItems.forEach(item => {
@@ -458,7 +563,7 @@
                 
                 // Cari berdasarkan Nama, NISN, atau Jabatan
                 if (name.includes(searchValue) || nis.includes(searchValue) || position.includes(searchValue)) {
-                    item.style.display = 'flex'; 
+                    item.style.display = 'block'; 
                 } else {
                     item.style.display = 'none'; 
                 }
