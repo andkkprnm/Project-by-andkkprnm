@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HypeLab 🧪 | Dashboard Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl font-bold text-indigo-700">HypeLab 🧪 Generator</h1>
+            <p class="text-gray-500">Input sekali, hasilkan 3 format chat instan.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="lg:col-span-1 bg-white p-6 rounded-2xl shadow-xl h-fit border border-gray-100">
+                <h2 class="text-xl font-bold mb-4 text-gray-800 border-b pb-3 text-center">Data Pesanan</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Nama Pembeli</label>
+                        <input type="text" id="inNama" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none" placeholder="Contoh: Baskara Putra">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase">Produk</label>
+                        <select id="selProduk" onchange="toggleLainnya()" class="w-full p-2.5 border rounded-lg focus:ring-2 focus:ring-indigo-400 outline-none">
+                            <option value="Instagram Followers">Instagram Followers</option>
+                            <option value="Instagram Like">Instagram Like</option>
+                            <option value="TikTok Followers">TikTok Followers</option>
+                            <option value="TikTok Like">TikTok Like</option>
+                            <option value="Lainnya">Lainnya...</option>
+                        </select>
+                        <input type="text" id="inProdukLain" class="hidden mt-2 w-full p-2.5 border rounded-lg bg-gray-50" placeholder="Ketik nama produk manual">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Jumlah Beli</label>
+                            <input type="number" id="inJumlah" class="w-full p-2.5 border rounded-lg" placeholder="1000">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Target</label>
+                            <input type="text" id="inTarget" class="w-full p-2.5 border rounded-lg" placeholder="@username">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Harga (Rp)</label>
+                            <input type="text" id="inHarga" class="w-full p-2.5 border rounded-lg" placeholder="50.000">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Metode</label>
+                            <select id="selMetode" class="w-full p-2.5 border rounded-lg">
+                                <option value="Dana">Dana</option>
+                                <option value="QRIS">QRIS</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-indigo-50 rounded-xl space-y-3 border border-indigo-100">
+                        <p class="text-xs font-bold text-indigo-600 text-center uppercase">Statistik Selesai</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Jumlah Awal</label>
+                                <input type="number" id="inAwal" class="w-full p-2 border rounded-md" placeholder="100">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase">Jumlah Akhir</label>
+                                <input type="number" id="inAkhir" class="w-full p-2 border rounded-md" placeholder="1150">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="generateFormat()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-all active:scale-95">Generate Format 🧪</button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-yellow-400">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-xs font-bold uppercase">1. Order Received</span>
+                        <button onclick="copyText('outDiterima')" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm flex items-center gap-1 italic underline">Salin Chat</button>
+                    </div>
+                    <textarea id="outDiterima" class="w-full h-40 p-3 bg-gray-50 border-none rounded-md text-sm font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-blue-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold uppercase">2. Processing Order</span>
+                        <button onclick="copyText('outProses')" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm flex items-center gap-1 italic underline">Salin Chat</button>
+                    </div>
+                    <textarea id="outProses" class="w-full h-32 p-3 bg-gray-50 border-none rounded-md text-sm font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-green-500">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold uppercase">3. Order Completed</span>
+                        <button onclick="copyText('outSelesai')" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm flex items-center gap-1 italic underline">Salin Chat</button>
+                    </div>
+                    <textarea id="outSelesai" class="w-full h-40 p-3 bg-gray-50 border-none rounded-md text-sm font-mono focus:ring-0" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleLainnya() {
+            const select = document.getElementById('selProduk');
+            const inputLain = document.getElementById('inProdukLain');
+            inputLain.className = (select.value === 'Lainnya') ? 'mt-2 w-full p-2.5 border rounded-lg block animate-pulse' : 'hidden';
+        }
+
+        function generateFormat() {
+            // Ambil Nama Produk
+            let namaProduk = document.getElementById('selProduk').value;
+            if (namaProduk === 'Lainnya') {
+                namaProduk = document.getElementById('inProdukLain').value || 'Produk';
+            }
+
+            // Hitung Bonus Otomatis: Bonus = Akhir - Awal - Beli
+            const beli = parseInt(document.getElementById('inJumlah').value) || 0;
+            const awal = parseInt(document.getElementById('inAwal').value) || 0;
+            const akhir = parseInt(document.getElementById('inAkhir').value) || 0;
+            let bonus = akhir - awal - beli;
+            if (bonus < 0) bonus = 0; // Cegah bonus minus jika input salah
+
+            const data = {
+                nama: document.getElementById('inNama').value || '[Nama]',
+                produk: namaProduk,
+                jumlah: beli,
+                target: document.getElementById('inTarget').value || '[Target]',
+                harga: document.getElementById('inHarga').value || '0',
+                metode: document.getElementById('selMetode').value,
+                awal: awal,
+                akhir: akhir,
+                bonus: bonus
+            };
+
+            const garis = "————————————————";
+
+            // Format 1: Diterima
+            document.getElementById('outDiterima').value = 
+`HypeLab 🧪 | Order Received
+${garis}
+Halo, Kak! Pembayaran kamu telah kami terima. Berikut adalah rincian pesanan kamu:
+
+Nama Pembeli: ${data.nama}
+Produk: ${data.produk}
+Jumlah: ${data.jumlah}
+Target (Link/Username): ${data.target}
+${garis}
+Harga: Rp ${data.harga}
+Diskon: Rp 0
+Total Bayar: Rp ${data.harga}
+Metode Pembayaran: ${data.metode}
+${garis}
+Pesanan kamu akan segera kami masukkan ke dalam antrean sistem. Mohon ditunggu prosesnya secara bertahap. Terima kasih! ✨`;
+
+            // Format 2: Diproses
+            document.getElementById('outProses').value = 
+`HypeLab 🧪 | Processing Order
+${garis}
+Halo, Kak! Pesanan kamu sedang dalam tahap pengerjaan oleh tim kami:
+
+Nama Pembeli: ${data.nama}
+Produk: ${data.produk}
+Jumlah: ${data.jumlah}
+Target (Link/Username): ${data.target}
+${garis}
+Mohon tidak mengubah profil menjadi private selama proses berlangsung agar pengiriman berjalan lancar. Stay tuned! ⚡️`;
+
+            // Format 3: Selesai
+            document.getElementById('outSelesai').value = 
+`HypeLab 🧪 | Order Completed
+${garis}
+Kabar gembira! Pesanan kamu telah sukses diproses sepenuhnya:
+
+Nama Pembeli: ${data.nama}
+Produk: ${data.produk}
+Target (Link/Username): ${data.target}
+${garis}
+Jumlah Awal: ${data.awal}
+Jumlah Akhir: ${data.akhir}
+Bonus: ${data.bonus}
+${garis}
+Terima kasih telah melakukan upgrade media sosial bersama HypeLab. Kami tunggu pesanan selanjutnya!
+
+Post. Boost. Flex. Repeat. 🧪🔥`;
+        }
+
+        function copyText(id) {
+            const copyText = document.getElementById(id);
+            copyText.select();
+            navigator.clipboard.writeText(copyText.value);
+            
+            // Efek simpel saat berhasil copy
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "Tersalin! ✅";
+            setTimeout(() => { btn.innerText = originalText; }, 2000);
+        }
+
+        // Init
+        generateFormat();
+    </script>
+</body>
+</html>
