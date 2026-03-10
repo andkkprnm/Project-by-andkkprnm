@@ -154,7 +154,8 @@
             const beli = parseInt(document.getElementById('inJumlah').value) || 0;
             const awal = parseInt(document.getElementById('inAwal').value) || 0;
             const akhir = parseInt(document.getElementById('inAkhir').value) || 0;
-            let bonus = akhir - awal - beli;
+            const bonus = akhir - awal - beli;
+            let batas = awal + beli;
             if (bonus < 0) bonus = 0;
 
             const d = {
@@ -166,8 +167,8 @@
                 metode: document.getElementById('selMetode').value,
                 awal: awal,
                 akhir: akhir,
-                bonus: bonus
-                batas: awal + beli
+                bonus: bonus,
+                batas: batas
             };
 
             const garis = "————————————————";
@@ -226,5 +227,6 @@ Post. Boost. Flex. Repeat. 🧪🔥`;
     </script>
 </body>
 </html>
+
 
 
