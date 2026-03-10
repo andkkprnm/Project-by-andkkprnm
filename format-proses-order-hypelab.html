@@ -175,7 +175,24 @@
 
             document.getElementById('outProses').value = `HypeLab 🧪 | Processing Order\n${garis}\nHalo, Kak! Pesanan kamu sedang dalam tahap pengerjaan oleh tim kami:\n\nNama Pembeli: ${d.nama}\nProduk: ${d.produk}\nJumlah: ${d.jumlah}\nTarget (Link/Username): ${d.target}\n${garis}\nMohon tidak mengubah profil menjadi private selama proses berlangsung agar pengiriman berjalan lancar. Stay tuned! ⚡️`;
 
-            document.getElementById('outSelesai').value = `HypeLab 🧪 | Order Completed\n${garis}\nKabar gembira! Pesanan kamu telah sukses diproses sepenuhnya:\n\nNama Pembeli: ${d.nama}\nProduk: ${d.produk}\nTarget (Link/Username): ${d.target}\n${garis}\nJumlah Awal: ${d.awal}\nJumlah Akhir: ${d.akhir}\nBonus: ${d.bonus}\n${garis}\nTerima kasih telah melakukan upgrade media sosial bersama HypeLab. Kami tunggu pesanan selanjutnya!\n\nPost. Boost. Flex. Repeat. 🧪🔥`;
+            document.getElementById('outSelesai').value = `HypeLab 🧪 | Order Completed
+————————————————
+Kabar gembira! Pesanan kamu telah sukses diproses sepenuhnya:
+
+Nama Pembeli: ${d.nama}
+Produk: ${d.produk}
+Target (Link/Username): ${d.target}
+————————————————
+Jumlah Awal: ${d.awal}
+Jumlah Akhir: ${d.akhir}
+Bonus: ${d.bonus}
+————————————————
+Terima kasih telah melakukan upgrade media sosial bersama HypeLab. Kami tunggu pesanan selanjutnya!
+
+*Hubungi kami jika pesanan anda turun hingga ${d.batas}
+
+Post. Boost. Flex. Repeat. 🧪🔥`;
+            
         }
 
         function copyText(id, btn) {
@@ -208,3 +225,4 @@
     </script>
 </body>
 </html>
+
