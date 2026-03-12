@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HypeLab 🧪 | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0f2f5; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">HypeLab <span class="text-indigo-600">🧪</span></h1>
+            <p class="text-slate-500 mt-2">Automasi Chat & Direct WhatsApp Sender</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <div class="lg:col-span-5 space-y-4">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+                    <h2 class="text-lg font-bold text-slate-800 mb-5 flex items-center gap-2">
+                        <span class="w-2 h-6 bg-indigo-600 rounded-full"></span> Data Transaksi
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[11px] font-bold text-indigo-600 uppercase ml-1 tracking-wider">No. WhatsApp Pelanggan</label>
+                            <input type="text" id="inWA" class="w-full p-3 bg-indigo-50 border-2 border-indigo-100 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all" placeholder="62812345678xx">
+                            <p class="text-[9px] text-slate-400 mt-1 ml-1">*Gunakan format 628 (tanpa +)</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase ml-1">Nama Pembeli</label>
+                                <input type="text" id="inNama" oninput="generateFormat()" class="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500" placeholder="Budi">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase ml-1">Target</label>
+                                <input type="text" id="inTarget" oninput="generateFormat()" class="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500" placeholder="@username">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-[11px] font-bold text-slate-400 uppercase ml-1">Produk</label>
+                            <select id="selProduk" onchange="toggleProduk(); generateFormat();" class="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500 cursor-pointer">
+                                <optgroup label="Instagram">
+                                    <option value="Instagram Followers Worldwide">Instagram Followers Worldwide</option>
+                                    <option value="Instagram Followers Indo">Instagram Followers Indo</option>
+                                    <option value="Instagram Likes Worldwide">Instagram Likes Worldwide</option>
+                                    <option value="Instagram Likes Indo">Instagram Likes Indo</option>
+                                </optgroup>
+                                <optgroup label="TikTok">
+                                    <option value="TikTok Followers Worldwide">TikTok Followers Worldwide</option>
+                                    <option value="TikTok Followers Indo">TikTok Followers Indo</option>
+                                    <option value="TikTok Likes Worldwide">TikTok Likes Worldwide</option>
+                                    <option value="TikTok Likes Indo">TikTok Likes Indo</option>
+                                </optgroup>
+                                <option value="Lainnya">Lainnya (Ketik Manual)</option>
+                            </select>
+                            <input type="text" id="inProdukLain" oninput="generateFormat()" class="hidden mt-2 w-full p-3 bg-indigo-50 border border-indigo-200 rounded-2xl" placeholder="Ketik produk...">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase ml-1">Harga (Rp)</label>
+                                <input type="text" id="inHarga" oninput="generateFormat()" class="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500" placeholder="50.000">
+                            </div>
+                            <div>
+                                <label class="text-[11px] font-bold text-slate-400 uppercase ml-1">Metode</label>
+                                <select id="selMetode" onchange="generateFormat()" class="w-full p-3 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500">
+                                    <option value="Dana">Dana</option>
+                                    <option value="QRIS">QRIS</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-3xl space-y-3">
+                            <p class="text-[10px] font-black text-indigo-400 uppercase text-center tracking-widest">Kalkulator Progress</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Beli</label>
+                                    <input type="number" id="inJumlah" oninput="generateFormat()" class="w-full p-2 bg-slate-800 text-white border-none rounded-xl text-center" placeholder="1000">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Awal</label>
+                                    <input type="number" id="inAwal" oninput="generateFormat()" class="w-full p-2 bg-slate-800 text-white border-none rounded-xl text-center" placeholder="100">
+                                </div>
+                                <div>
+                                    <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Akhir</label>
+                                    <input type="number" id="inAkhir" oninput="generateFormat()" class="w-full p-2 bg-slate-800 text-white border-none rounded-xl text-center" placeholder="1150">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-4">
+                
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold py-1 px-3 bg-amber-100 text-amber-600 rounded-full italic">1. Order Received</span>
+                        <div class="flex gap-2">
+                            <button onclick="copyText('outDiterima', this)" class="text-xs font-bold text-slate-400 hover:text-indigo-600">Salin</button>
+                            <button onclick="sendWA('outDiterima')" class="text-xs font-bold bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all">Kirim WA 📲</button>
+                        </div>
+                    </div>
+                    <textarea id="outDiterima" class="w-full h-32 p-3 bg-slate-50 border-none rounded-2xl text-[13px] font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold py-1 px-3 bg-blue-100 text-blue-600 rounded-full italic">2. Processing Order</span>
+                        <div class="flex gap-2">
+                            <button onclick="copyText('outProses', this)" class="text-xs font-bold text-slate-400 hover:text-indigo-600">Salin</button>
+                            <button onclick="sendWA('outProses')" class="text-xs font-bold bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all">Kirim WA 📲</button>
+                        </div>
+                    </div>
+                    <textarea id="outProses" class="w-full h-24 p-3 bg-slate-50 border-none rounded-2xl text-[13px] font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold py-1 px-3 bg-emerald-100 text-emerald-600 rounded-full italic">3. Order Completed</span>
+                        <div class="flex gap-2">
+                            <button onclick="copyText('outSelesai', this)" class="text-xs font-bold text-slate-400 hover:text-indigo-600">Salin</button>
+                            <button onclick="sendWA('outSelesai')" class="text-xs font-bold bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all">Kirim WA 📲</button>
+                        </div>
+                    </div>
+                    <textarea id="outSelesai" class="w-full h-36 p-3 bg-slate-50 border-none rounded-2xl text-[13px] font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-xs font-bold py-1 px-3 bg-indigo-100 text-indigo-600 rounded-full italic">4. Official Warranty Card</span>
+                        <div class="flex gap-2">
+                            <button onclick="copyText('outGaransi', this)" class="text-xs font-bold text-slate-400 hover:text-indigo-600">Salin</button>
+                            <button onclick="sendWA('outGaransi')" class="text-xs font-bold bg-green-500 text-white px-3 py-1 rounded-full hover:bg-green-600 transition-all">Kirim WA 📲</button>
+                        </div>
+                    </div>
+                    <textarea id="outGaransi" class="w-full h-64 p-3 bg-slate-50 border-none rounded-2xl text-[13px] font-mono focus:ring-0" readonly></textarea>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleProduk() {
+            const select = document.getElementById('selProduk');
+            const inputLain = document.getElementById('inProdukLain');
+            inputLain.classList.toggle('hidden', select.value !== 'Lainnya');
+        }
+
+        function generateFormat() {
+            let namaProduk = document.getElementById('selProduk').value;
+            if (namaProduk === 'Lainnya') {
+                namaProduk = document.getElementById('inProdukLain').value || '...';
+            }
+
+            const beli = parseInt(document.getElementById('inJumlah').value) || 0;
+            const awal = parseInt(document.getElementById('inAwal').value) || 0;
+            const akhir = parseInt(document.getElementById('inAkhir').value) || 0;
+            let bonus = akhir - awal - beli;
+            if (bonus < 0) bonus = 0;
+
+            // Generate Tanggal Berakhir (Today + 30 Days)
+            const today = new Date();
+            const expDate = new Date();
+            expDate.setDate(today.getDate() + 30);
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formatExp = expDate.toLocaleDateString('id-ID', options);
+
+            const d = {
+                nama: document.getElementById('inNama').value || '[Nama]',
+                produk: namaProduk,
+                jumlah: beli || '[Jumlah]',
+                target: document.getElementById('inTarget').value || '[Target]',
+                harga: document.getElementById('inHarga').value || '0',
+                metode: document.getElementById('selMetode').value,
+                awal: awal,
+                akhir: akhir,
+                bonus: bonus,
+                batas: awal + beli,
+                tglSelesai: formatExp
+            };
+
+            const garis = "————————————————";
+
+            document.getElementById('outDiterima').value = `HypeLab 🧪 | Order Received\n${garis}\nHalo, Kak! Pembayaran kamu telah kami terima. Berikut adalah rincian pesanan kamu:\n\nNama Pembeli: ${d.nama}\nProduk: ${d.produk}\nJumlah: ${d.jumlah}\nTarget (Link/Username): ${d.target}\n${garis}\nHarga: Rp ${d.harga}\nDiskon: Rp 0\nTotal Bayar: Rp ${d.harga}\nMetode Pembayaran: ${d.metode}\n${garis}\nPesanan kamu akan segera kami masukkan ke dalam antrean sistem. Mohon ditunggu prosesnya secara bertahap. Terima kasih! ✨`;
+
+            document.getElementById('outProses').value = `HypeLab 🧪 | Processing Order\n${garis}\nHalo, Kak! Pesanan kamu sedang dalam tahap pengerjaan oleh tim kami:\n\nNama Pembeli: ${d.nama}\nProduk: ${d.produk}\nJumlah: ${d.jumlah}\nTarget (Link/Username): ${d.target}\n${garis}\nMohon tidak mengubah profil menjadi private selama proses berlangsung agar pengiriman berjalan lancar. Stay tuned! ⚡️`;
+
+            document.getElementById('outSelesai').value = `HypeLab 🧪 | Order Completed
+————————————————
+Kabar gembira! Pesanan kamu telah sukses diproses sepenuhnya:
+
+Nama Pembeli: ${d.nama}
+Produk: ${d.produk}
+Target (Link/Username): ${d.target}
+————————————————
+Jumlah Awal: ${d.awal}
+Jumlah Akhir: ${d.akhir}
+Bonus: ${d.bonus}
+————————————————
+Terima kasih telah melakukan upgrade media sosial bersama HypeLab. Kami tunggu pesanan selanjutnya!
+
+Post. Boost. Flex. Repeat. 🧪🔥`;
+
+            document.getElementById('outGaransi').value = `🧪 HYPELAB | OFFICIAL WARRANTY CARD
+——————————————————
+KARTU GARANSI LAYANAN
+Nama Pembeli: ${d.nama}
+Target (username/link): ${d.target}
+Layanan: ${d.produk}
+Jumlah Beli: ${d.jumlah}
+Batas Garansi: ${d.batas}
+Tanggal Berakhir: ${d.tglSelesai}
+——————————————————
+SYARAT & KETENTUAN KLAIM:
+Garansi berlaku selama 30 hari sejak tanggal pembelian.
+Klaim garansi hanya berlaku jika jumlah pengikut/like turun di bawah Batas Garansi yang tertera di atas.
+Akun tidak boleh di-private atau mengganti username selama masa garansi masih berjalan.
+Lampirkan tangkapan layar (screenshot) bukti penurunan saat melakukan klaim kepada admin.
+Terima kasih telah mempercayakan kebutuhan sosial media Anda bersama HypeLab!
+Post. Boost. Flex. Repeat. ⚡️`;
+
+        }
+
+        function copyText(id, btn) {
+            const textarea = document.getElementById(id);
+            textarea.select();
+            navigator.clipboard.writeText(textarea.value);
+            const ori = btn.innerText;
+            btn.innerText = "OK! ✅";
+            setTimeout(() => { btn.innerText = ori; }, 1000);
+        }
+
+        function sendWA(id) {
+            const noWA = document.getElementById('inWA').value;
+            const pesan = document.getElementById(id).value;
+            
+            if (!noWA) {
+                alert("Tolong isi nomor WhatsApp pelanggan terlebih dahulu!");
+                return;
+            }
+
+            const cleanNoWA = noWA.replace(/\D/g, '');
+            const encodedPesan = encodeURIComponent(pesan);
+            
+            window.open(`https://api.whatsapp.com/send?phone=${cleanNoWA}&text=${encodedPesan}`, '_blank');
+        }
+
+        generateFormat();
+    </script>
+</body>
+</html>
